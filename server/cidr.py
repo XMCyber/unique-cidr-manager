@@ -10,16 +10,11 @@ global range_repo, reason, requiredrange, access_token, addresses, occupied, sub
 
 try:
     #initial params definition
-    #access_token = os.environ['access_token']
-    access_token = "yourgithubtoken"
-    #requiredrange = os.environ['requiredrange']
+    access_token = os.environ['access_token']
+    requiredrange = os.environ['requiredrange']
     subnet_size = os.environ['subnet_size']
-    subnet_size = "26"
-    requiredrange = "10"
-    #reason = os.environ['reason']
-    reason = "test-server-python"
-    #repo = os.environ['repo']
-    range_repo = "range_repo"
+    reason = os.environ['reason']
+    range_repo = os.environ['range_repo']
     HTTPS_REMOTE_URL = 'https://' + access_token + '@github.com/' + range_repo
     DEST = 'infra'
     #reading json data
@@ -29,7 +24,7 @@ try:
     
 except: 
     print("Initial setup failed")
-    print("Make sure all env params are exported: access_token,requiredrange,reason,repo")
+    print("Make sure all env params are exported: access_token,requiredrange,reason,range_repo")
     os._exit(1)
 
 class get_cidr():
