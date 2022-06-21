@@ -1,10 +1,10 @@
-from cgitb import reset
 from http.server import BaseHTTPRequestHandler
 from cidr import get_cidr
 
 class Server(BaseHTTPRequestHandler): 
   def do_GET(self):
     if self.path == "/get-cidr":
+      print("Request is being served")
       self.respond()
     
   def handle_http(self, status, content_type):

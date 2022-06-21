@@ -1,0 +1,2 @@
+GitPython==3.1.27
+ipaddress==1.0.23

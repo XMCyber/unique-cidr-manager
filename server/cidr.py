@@ -1,12 +1,12 @@
-from genericpath import exists
 import time
 import json
 import os
 from os import path
 from ipaddress import IPv4Network
+os.environ["GIT_PYTHON_REFRESH"] = "quiet"
 from git import Repo
 
-global range_repo, reason, requiredrange, access_token, addresses, occupied, subnet_size
+global range_repo, reason, requiredrange, access_token, subnet_size, addresses
 
 try:
     #initial params definition
@@ -17,34 +17,37 @@ try:
     range_repo = os.environ['range_repo']
     HTTPS_REMOTE_URL = 'https://' + access_token + '@github.com/' + range_repo
     DEST = 'infra'
-    #reading json data
-    addresses = json.load(open(DEST+'/addresses-range.json'))
-    occupied = json.load(open(DEST+'/occupied-range.json'))
-    #print("Done loading params")
+    print("Done loading params")
     
 except: 
     print("Initial setup failed")
-    print("Make sure all env params are exported: access_token,requiredrange,reason,range_repo")
+    print("Make sure all env params are exported: 1)access_token 2)requiredrange 3)reason 4)range_repo 5)subnet_size")
     os._exit(1)
 
 class get_cidr():
     def main_function():   
         def git_clone(repo_dir):
             try:
-                if path.exists(DEST):
+                if os.path.exists(DEST):
+                    print("Repo already exists - pulling (refresh state)")
                     repo = Repo(repo_dir)
                     repo.remotes.origin.pull()
                 else:        
                     #cloning the infra repo
+                    print("Cloning")
                     Repo.clone_from(HTTPS_REMOTE_URL, DEST)
-            except:
-                print("Error cloning repo")
-                os._exit(1)
+                    print("Repo cloned")
+            except Exception as e: 
+                print(e)
+                raise e 
+
         def get_subnet(range):
             #getting main address range to obtian subnets from it 
+            addresses = json.load(open(DEST+'/addresses-range.json'))
+            occupied = json.load(open(DEST+'/occupied-range.json'))
             main_range = IPv4Network(addresses[range])
             #getting all possible CIDRs blocks in the range - block size can be modified using /subnet_size/
-            for subnet in main_range.subnets(new_prefix=subnet_size):
+            for subnet in main_range.subnets(new_prefix=int(subnet_size)):
                 #getting all accupied CIDRs to compare with
                 is_occupied = False
                 for key in occupied:
@@ -87,7 +90,9 @@ class get_cidr():
         #getting available subnet
         subnet = get_subnet(requiredrange)
         data={reason+str(int(time.time())):str(subnet)}
+        print(data)
         #adding the chosen CIDR to the occupied list 
+        occupied = json.load(open(DEST+'/occupied-range.json'))
         occupied.update(data)
         #appending used CIDR to list
         write_json(occupied)
