@@ -27,11 +27,8 @@ Required parameter name and values:
 
 ## Docker
 
-Dillinger is very easy to install and deploy in a Docker container.
+unique-cidr-manager is very easy to install and deploy in a Docker container.
 
-By default, the Docker will expose port 8080, so change this within the
-Dockerfile if necessary. When ready, simply use the Dockerfile to
-build the image.
 
 ```sh
 docker build -t image:tag .
