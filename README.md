@@ -35,7 +35,7 @@ docker build -t image:tag .
 ```
 
 ```sh
-docker run -d -p 8000:8000 --env-file env image:tag
+docker run -d -p 8000:8000 --env-file env -name unique-cidr-manager unique-cidr-manager:latest
 ```
 
 
