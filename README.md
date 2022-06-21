@@ -14,7 +14,7 @@ Required parameter name and values:
 | ------ | ------ | ------ |
 | access_token | your personal token for the repo that will contain the unique list of occupied CIDRs |  ghp_3KR4U7bxxxxxxxxxxxxx
 | requiredrange | the required major range from list | 10 (or 172 or 192) |
-| reason | will be using for the commit message, it will help to identify the reason for taken cidr | dev eks cluster |
+| reason | will be using for the commit message, it will help to identify the reason for taken cidr | dev_eks_cluster |
 | occupied_repo | the name of the owner+repo in github.com | xmcyber/infra |
 | subnet_size | the required subnet size (mask) | 26 |
 
