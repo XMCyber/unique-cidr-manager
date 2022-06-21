@@ -14,8 +14,8 @@ try:
     requiredrange = os.environ['requiredrange']
     subnet_size = os.environ['subnet_size']
     reason = os.environ['reason']
-    range_repo = os.environ['range_repo']
-    HTTPS_REMOTE_URL = 'https://' + access_token + '@github.com/' + range_repo
+    occupied_repo = os.environ['occupied_repo']
+    HTTPS_REMOTE_URL = 'https://' + access_token + '@github.com/' + occupied_repo
     DEST = 'infra'
     print("Done loading params")
     
@@ -39,11 +39,11 @@ class get_cidr():
                     print("Repo cloned")
             except Exception as e: 
                 print(e)
-                raise e 
+                raise e
 
         def get_subnet(range):
             #getting main address range to obtian subnets from it 
-            addresses = json.load(open(DEST+'/addresses-range.json'))
+            addresses = json.load(open('addresses-range.json'))
             occupied = json.load(open(DEST+'/occupied-range.json'))
             main_range = IPv4Network(addresses[range])
             #getting all possible CIDRs blocks in the range - block size can be modified using /subnet_size/
@@ -89,7 +89,7 @@ class get_cidr():
         git_clone(DEST)
         #getting available subnet
         subnet = get_subnet(requiredrange)
-        data={reason+str(int(time.time())):str(subnet)}
+        data={reason+ '-' + str(int(time.time())):str(subnet)}
         print(data)
         #adding the chosen CIDR to the occupied list 
         occupied = json.load(open(DEST+'/occupied-range.json'))
