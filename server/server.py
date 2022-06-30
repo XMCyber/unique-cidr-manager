@@ -1,5 +1,4 @@
 from http.server import BaseHTTPRequestHandler
-#from http.server import SimpleHTTPRequestHandler
 from urllib.parse import urlparse
 from cidr import get_cidr
 
