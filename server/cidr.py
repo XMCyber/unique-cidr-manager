@@ -13,6 +13,8 @@ try:
     subnet_size = ""
     reason = ""
     access_token = os.environ['access_token']
+
+
     occupied_repo = os.environ['occupied_repo']
     HTTPS_REMOTE_URL = 'https://' + access_token + '@github.com/' + occupied_repo
     DEST = 'infra'
@@ -41,6 +43,7 @@ class get_cidr():
                 raise e
 
         def get_subnet(range,subnet_size):
+
             #getting main address range to obtian subnets from it 
             addresses = json.load(open('addresses-range.json'))
             occupied = json.load(open(DEST+'/occupied-range.json'))
@@ -99,3 +102,4 @@ class get_cidr():
         push_to_repo(DEST)
         #final print for output - used for automaion
         return subnet
+
