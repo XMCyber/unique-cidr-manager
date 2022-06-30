@@ -1,19 +1,18 @@
 import time
 import json
 import os
-from os import path
 from ipaddress import IPv4Network
 os.environ["GIT_PYTHON_REFRESH"] = "quiet"
 from git import Repo
 
-global range_repo, reason, requiredrange, access_token, subnet_size, addresses
+global range_repo, reason, requiredrange, access_token, addresses
 
 try:
     #initial params definition
+    requiredrange = ""
+    subnet_size = ""
+    reason = ""
     access_token = os.environ['access_token']
-    requiredrange = os.environ['requiredrange']
-    subnet_size = os.environ['subnet_size']
-    reason = os.environ['reason']
     occupied_repo = os.environ['occupied_repo']
     HTTPS_REMOTE_URL = 'https://' + access_token + '@github.com/' + occupied_repo
     DEST = 'infra'
@@ -25,7 +24,7 @@ except:
     os._exit(1)
 
 class get_cidr():
-    def main_function():   
+    def main_function(subnet_size,requiredrange,reason):
         def git_clone(repo_dir):
             try:
                 if os.path.exists(DEST):
@@ -41,7 +40,7 @@ class get_cidr():
                 print(e)
                 raise e
 
-        def get_subnet(range):
+        def get_subnet(range,subnet_size):
             #getting main address range to obtian subnets from it 
             addresses = json.load(open('addresses-range.json'))
             occupied = json.load(open(DEST+'/occupied-range.json'))
@@ -88,7 +87,7 @@ class get_cidr():
         #cloning(or pulling if already cloned)
         git_clone(DEST)
         #getting available subnet
-        subnet = get_subnet(requiredrange)
+        subnet = get_subnet(requiredrange,subnet_size)
         data={reason+ '-' + str(int(time.time())):str(subnet)}
         print(data)
         #adding the chosen CIDR to the occupied list 
@@ -100,6 +99,3 @@ class get_cidr():
         push_to_repo(DEST)
         #final print for output - used for automaion
         return subnet
-
-    if __name__ == '__main__':
-        main_function()
