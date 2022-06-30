@@ -14,7 +14,7 @@ Required parameter name and values:
 | name | description | value |
 | ------ | ------ | ------ |
 | access_token | your personal token for the repo that will contain the unique list of occupied CIDRs |  ghp_3KR4U7bxxxxxxxxxxxxx
-| requiredrange | the required major range from list | 10 (or 172 or 192) |
+| occupied_repo | the name of the owner+repo in github.com | xmcyber/infra |
 
 
 - The tool will first clone a dedicated repo (your own repo) that will maintain the final and unique list of occupide ip ranges. 
