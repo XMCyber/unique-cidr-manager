@@ -1,7 +1,7 @@
 # unique-cidr-manager
 ## _A basic tool build to manage unique CIDR across networks_
 
-[![Network](https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/IPv4_address_structure_and_writing_systems-en.svg/300px-IPv4_address_structure_and_writing_systems-en.svg.png)]()
+[![Network](https://www.baeldung.com/wp-content/uploads/sites/4/2021/02/IPV4vsIPV6-1024x718-1.png)]()
 
 This tool is built in order to manage the private range ip addresses in the organization network to avoid future potential routing conflicts. 
 
@@ -14,9 +14,7 @@ Required parameter name and values:
 | ------ | ------ | ------ |
 | access_token | your personal token for the repo that will contain the unique list of occupied CIDRs |  ghp_3KR4U7bxxxxxxxxxxxxx
 | requiredrange | the required major range from list | 10 (or 172 or 192) |
-| reason | will be using for the commit message, it will help to identify the reason for taken cidr | dev_eks_cluster |
-| occupied_repo | the name of the owner+repo in github.com | xmcyber/infra |
-| subnet_size | the required subnet size (mask) | 26 |
+
 
 - The tool will first clone a dedicated repo (your own repo) that will maintain the final and unique list of occupide ip ranges. 
 - After getting the required major range, it will start choosing first subnet (cidr) in this range, for example 10.0.0.0/26
