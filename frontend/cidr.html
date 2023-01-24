@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>CIDR Manager</title>
+		<title>CIDR</title>
 		<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" />
 		<link
 			rel="stylesheet"
@@ -100,15 +100,13 @@
 		<script src="cidr.js"></script>
 	</head>
 	<body>
-	<form>
 		<div class="testbox">
 			<div class="wrapper">
 				<h1>CIDR Manager</h1>
-				<p>version 1.3.1</p>
+				<p>version 1.3.0</p>
 				<div class="item">
 					<p>Select Subnet Size</p>
-					<select required name="subnet" id="subnet">
-						<option selected="select" value="" disabled>choose size</option>
+					<select name="subnet" id="subnet">
 						<option value="28">/28 (16 addresses)</option>
 						<option value="27">/27 (32 addresses)</option>
 						<option value="26">/26 (64 addresses)</option>
@@ -119,8 +117,7 @@
 				</div>
 				<div class="item">
 					<p>Select pivate range</p>
-					<select required name="range" id="range">
-						<option selected="select" value="" disabled>choose range</option>
+					<select name="range" id="range">
 						<option value="10">10</option>
 						<option value="172">172</option>
 						<option value="192">192</option>
@@ -128,7 +125,7 @@
 				</div>
 				<div class="item">
 					<p>Please specify the reason</p>
-					<textarea required id="reason" rows="1"></textarea>
+					<textarea id="reason" rows="5"></textarea>
 				</div>
 				<div class="btn-block">
 					<button onclick="onSubmit()">Get Unique CIDR</button>
@@ -136,10 +133,9 @@
 
 				<div class="item">
 					<p>The received CIDR is</p>
-					<textarea id="cidr" disabled rows="1"></textarea>
+					<textarea id="cidr" disabled rows="5"></textarea>
 				</div>
 			</div>
 		</div>
-	</form>
 	</body>
 </html>
