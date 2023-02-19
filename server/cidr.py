@@ -37,7 +37,6 @@ class get_cidr():
         def get_subnet(range,subnet_size):
             #getting main address range to obtian subnets from it 
             addresses = json.load(open('addresses-range.json'))
-            #occupied = json.load(open(DEST+'/occupied-range.json'))
             main_range = IPv4Network(addresses[range])
             #getting all possible CIDRs blocks in the range - block size can be modified using /subnet_size/
             for subnet in main_range.subnets(new_prefix=int(subnet_size)):
