@@ -5,24 +5,16 @@ from ipaddress import IPv4Network
 os.environ["GIT_PYTHON_REFRESH"] = "quiet"
 from git import Repo
 
-global range_repo, reason, requiredrange, access_token, addresses
-
 try:
     #initial params definition
-    requiredrange = ""
-    subnet_size = ""
-    reason = ""
     access_token = os.environ['access_token']
-
-
     occupied_repo = os.environ['occupied_repo']
     HTTPS_REMOTE_URL = 'https://' + access_token + '@github.com/' + occupied_repo
     DEST = 'infra'
     print("Done loading params")
-    
 except: 
     print("Initial setup failed")
-    print("Make sure all env params are exported: 1)access_token 2)requiredrange 3)reason 4)range_repo 5)subnet_size")
+    print("Make sure all env params are exported: 1)access_token 2)requiredrange")
     os._exit(1)
 
 class get_cidr():
@@ -43,10 +35,9 @@ class get_cidr():
                 raise e
 
         def get_subnet(range,subnet_size):
-
             #getting main address range to obtian subnets from it 
             addresses = json.load(open('addresses-range.json'))
-            occupied = json.load(open(DEST+'/occupied-range.json'))
+            #occupied = json.load(open(DEST+'/occupied-range.json'))
             main_range = IPv4Network(addresses[range])
             #getting all possible CIDRs blocks in the range - block size can be modified using /subnet_size/
             for subnet in main_range.subnets(new_prefix=int(subnet_size)):
@@ -69,7 +60,7 @@ class get_cidr():
                 return subnet
             raise Exception("No available address")
             
-        def write_json(new_data, filename='infra/occupied-range.json'):
+        def write_json(new_data, filename=DEST+'/occupied-range.json'):
             try:
                 with open(filename,'r+') as file:
                     json.dump(new_data, file, indent = 4)
@@ -89,12 +80,24 @@ class get_cidr():
 
         #cloning(or pulling if already cloned)
         git_clone(DEST)
+        occupied = json.load(open(DEST+'/occupied-range.json'))
+        #checking if reason is empty 
+        if reason == "":
+            return "You must specify reason"
+        #checking if reason was already served and reture existing subnet
+        for key in occupied:
+            #removing epoch time stamp, 10 chars for epoch, 1 char for dash
+            original_reason=key[:len(key)-11]
+            if original_reason == reason:
+                #reason already served - getting allocated CIDR
+                print("reason already served - getting allocated CIDR")
+                subnet=occupied[key]
+                return subnet
         #getting available subnet
         subnet = get_subnet(requiredrange,subnet_size)
         data={reason+ '-' + str(int(time.time())):str(subnet)}
         print(data)
         #adding the chosen CIDR to the occupied list 
-        occupied = json.load(open(DEST+'/occupied-range.json'))
         occupied.update(data)
         #appending used CIDR to list
         write_json(occupied)
