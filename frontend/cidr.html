@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>CIDR</title>
+		<title>CIDR Manager</title>
 		<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" />
 		<link
 			rel="stylesheet"
@@ -81,19 +81,34 @@
 				margin-top: 20px;
 				text-align: center;
 			}
-			.button {
-				width: 150px;
-				padding: 10px;
+			.button1 {
+				width: 120px;
+				padding: 5px;
 				border: none;
 				-webkit-border-radius: 5px;
 				-moz-border-radius: 5px;
 				border-radius: 5px;
-				background-color: #095484;
+				background-color: #3d7394;
 				font-size: 16px;
-				color: #fff;
+				color: #ffffff;
 				cursor: pointer;
 			}
-			.button:hover {
+			.button1:hover {
+				background-color: #0666a3;
+			}
+			.button2 {
+				width: 170px;
+				padding: 5px;
+				border: none;
+				-webkit-border-radius: 5px;
+				-moz-border-radius: 5px;
+				border-radius: 5px;
+				background-color: #3d7394;
+				font-size: 16px;
+				color: #ffffff;
+				cursor: pointer;
+			}
+			.button2:hover {
 				background-color: #0666a3;
 			}
 		</style>
@@ -102,10 +117,12 @@
 	<body>
 		<div class="testbox">
 			<div class="wrapper">
-				<h1>CIDR Manager</h1>
-				<p>version 1.3.0</p>
+				<h1 style="color:#3d7394;">CIDR Manager</h1>
+				<p style="font-size:10px;">version 1.4.2</p>
+				<p>&nbsp;</p>
+				<p>Fields marked with * are mandatory</p>
 				<div class="item">
-					<p>Select Subnet Size</p>
+					<p>* Select Subnet Size</p>
 					<select name="subnet" id="subnet">
 						<option value="28">/28 (16 addresses)</option>
 						<option value="27">/27 (32 addresses)</option>
@@ -116,24 +133,30 @@
 					</select>
 				</div>
 				<div class="item">
-					<p>Select pivate range</p>
+					<p>* Select pivate range</p>
 					<select name="range" id="range">
 						<option value="10">10</option>
 						<option value="172">172</option>
 						<option value="192">192</option>
 					</select>
 				</div>
-				<div class="item">
-					<p>Please specify the reason</p>
+				<div class="textarea">
+					<p>* Please specify the reason</p>
 					<textarea id="reason" rows="5"></textarea>
 				</div>
-				<div class="btn-block">
-					<button onclick="onSubmit()">Get Unique CIDR</button>
+				<div class="button1">
+					<button1 onclick="get_cidr()">Get Unique CIDR</button1>
 				</div>
-
-				<div class="item">
+				<div class="textarea">
 					<p>The received CIDR is</p>
-					<textarea id="cidr" disabled rows="5"></textarea>
+					<textarea id="cidr" rows="5"></textarea>
+				</div>
+				<div class="button2">
+					<button2 onclick="get_occupied_list()">Get Occupied CIDR List</button2>
+				</div>
+				<div class="textarea">
+					<p>The Occupied CIDR list is</p>
+					<textarea id="cidrlist" rows="10" cols="40"></textarea>
 				</div>
 			</div>
 		</div>
