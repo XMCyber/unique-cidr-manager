@@ -17,23 +17,24 @@ except:
     print("Make sure all env params are exported: 1)access_token 2)requiredrange")
     os._exit(1)
 
-class get_cidr():
-    def main_function(subnet_size,requiredrange,reason):
-        def git_clone(repo_dir):
-            try:
-                if os.path.exists(DEST):
-                    print("Repo already exists - pulling (refresh state)")
-                    repo = Repo(repo_dir)
-                    repo.remotes.origin.pull()
-                else:        
-                    #cloning the infra repo
-                    print("Cloning")
-                    Repo.clone_from(HTTPS_REMOTE_URL, DEST)
-                    print("Repo cloned")
-            except Exception as e: 
-                print(e)
-                raise e
+def git_clone(repo_dir):
+    try:
+        if os.path.exists(DEST):
+            print("Repo already exists - pulling (refresh state)")
+            repo = Repo(repo_dir)
+            repo.remotes.origin.pull()
+        else:        
+            #cloning the infra repo
+            print("Cloning")
+            Repo.clone_from(HTTPS_REMOTE_URL, DEST)
+            print("Repo cloned")
+    except Exception as e: 
+        print(e)
+        raise e
 
+class get_cidr():
+
+    def get_unique_cidr(subnet_size,requiredrange,reason):
         def get_subnet(range,subnet_size):
             #getting main address range to obtian subnets from it 
             addresses = json.load(open('addresses-range.json'))
@@ -82,7 +83,7 @@ class get_cidr():
         occupied = json.load(open(DEST+'/occupied-range.json'))
         #checking if reason is empty 
         if reason == "":
-            return "You must specify reason"
+            return "You must specify reason, this field is mandatory!"
         #checking if reason was already served and reture existing subnet
         for key in occupied:
             #removing epoch time stamp, 10 chars for epoch, 1 char for dash
@@ -105,3 +106,7 @@ class get_cidr():
         #final print for output - used for automaion
         return subnet
 
+    def get_all_occupied():
+        git_clone(DEST)
+        occupied = json.load(open(DEST+'/occupied-range.json'))
+        return json.dumps(occupied)
