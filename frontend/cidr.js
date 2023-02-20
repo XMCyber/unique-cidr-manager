@@ -22,7 +22,8 @@ async function get_occupied_list() {
 		document.getElementById('cidrlist').value = "Trying to obtain list from GIT repo..";
 		const response = await fetch(url);
 		const occupiedlist = await response.text();
-		document.getElementById('cidrlist').value = (occupiedlist);
+		document.getElementById('json-output').innerHTML = occupiedlist;
+		document.getElementById('cidrlist').value = "Done!";
 	}
 	catch (e) {
 		document.getElementById('cidrlist').value = `server error: ${e.message}`;
