@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse
 from cidr import get_cidr
-from subnet import get_subnetst_from_cidr
+from subnet import subnets
 
 class Server(BaseHTTPRequestHandler): 
   def do_GET(self):
@@ -37,12 +37,15 @@ class Server(BaseHTTPRequestHandler):
       subnet_size = query_components["subnet_size"]
       cidr = query_components["cidr"]
       self.respond_sunbets(subnet_size,cidr)
+    if self.path.startswith("/get-occupied-list"):
+      print("get-occupied-list - Request is being served")
+      self.respond_get_occupied_list()
     
   def handle_http_cidr(self, status, content_type, subnet_size,requiredrange,reason):
     self.send_response(status)
     self.send_header('Content-type', content_type)
     self.end_headers()
-    result=get_cidr.main_function(subnet_size,requiredrange,reason)
+    result=get_cidr.get_unique_cidr(subnet_size,requiredrange,reason)
     print(str(result))
     return bytes(str(result), "UTF-8")
   
@@ -50,7 +53,15 @@ class Server(BaseHTTPRequestHandler):
     self.send_response(status)
     self.send_header('Content-type', content_type)
     self.end_headers()
-    result=get_subnetst_from_cidr.main_function(subnet_size,cidr)
+    result=subnets.get_subnets_from_cidr(subnet_size,cidr)
+    print(str(result))
+    return bytes(str(result), "UTF-8")
+  
+  def handle_get_occupied_list(self, status, content_type):
+    self.send_response(status)
+    self.send_header('Content-type', content_type)
+    self.end_headers()
+    result=get_cidr.get_all_occupied()
     print(str(result))
     return bytes(str(result), "UTF-8")
     
@@ -60,4 +71,8 @@ class Server(BaseHTTPRequestHandler):
 
   def respond_sunbets(self,subnet_size,cidr):
     content = self.handle_http_subnets(200, 'text/html', subnet_size,cidr)
+    self.wfile.write(content)
+  
+  def respond_get_occupied_list(self):
+    content = self.handle_get_occupied_list(200, 'text/html')
     self.wfile.write(content)

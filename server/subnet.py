@@ -1,7 +1,7 @@
 from ipaddress import IPv4Network
 
-class get_subnetst_from_cidr():
-    def main_function(subnet_size, cidr):
+class subnets():
+    def get_subnets_from_cidr(subnet_size, cidr):
         subnetslist = ""
         print("cidr: " + cidr)
         cidr = IPv4Network(cidr)
