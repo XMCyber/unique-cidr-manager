@@ -10,6 +10,7 @@
 			crossorigin="anonymous"
 		/>
 		<style>
+			h1 {text-align: center;}
 			pre {
         		background-color: #f7f7f7;
         		border: 1px solid #ccc;
@@ -142,32 +143,31 @@
 				<div class="item">
 					<p>* Select pivate range</p>
 					<select name="range" id="range">
-						<option value="10">10</option>
-						<option value="172">172</option>
-						<option value="192">192</option>
+						<option value="10">10.0.0.0/8</option>
+						<option value="172">172.16.0.0/12</option>
+						<option value="192">192.168.0.0/16</option>
 					</select>
 				</div>
 				<div class="textarea">
-					<p>* Please specify the reason</p>
-					<textarea id="reason" rows="5"></textarea>
+					<p>* Please specify the reason (avoid using whitespaces)</p>
+					<textarea id="reason" rows="1" cols="70"></textarea>
 				</div>
 				<div class="button1">
 					<button1 onclick="get_cidr()">Get Unique CIDR</button1>
 				</div>
 				<div class="textarea">
 					<p>The received CIDR is</p>
-					<textarea id="cidr" rows="5"></textarea>
+					<textarea id="cidr" rows="1" cols="70"></textarea>
 				</div>
 				<div class="button2">
 					<button2 onclick="get_occupied_list()">Get Occupied CIDR List</button2>
 				</div>
 				<div class="textarea">
 					<p>The Occupied CIDR list is</p>
-					<textarea id="cidrlist" rows="1" cols="20"></textarea>
+					<textarea id="cidrlist" rows="1" cols="70"></textarea>
 				</div>
 				<pre id="json-output"></pre>
 			</div>
 		</div>	
-		
 	</body>
 </html>
