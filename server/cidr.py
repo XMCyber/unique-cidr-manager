@@ -109,4 +109,4 @@ class get_cidr():
     def get_all_occupied():
         git_clone(DEST)
         occupied = json.load(open(DEST+'/occupied-range.json'))
-        return json.dumps(occupied)
+        return json.dumps(occupied,indent=4)
