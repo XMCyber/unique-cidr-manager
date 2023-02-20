@@ -10,6 +10,13 @@
 			crossorigin="anonymous"
 		/>
 		<style>
+			pre {
+        		background-color: #f7f7f7;
+        		border: 1px solid #ccc;
+        		padding: 10px;
+        		font-size: 14px;
+        		font-family: 'Courier New', Courier, monospace;
+      		}
 			html,
 			body {
 				min-height: 100%;
@@ -156,9 +163,11 @@
 				</div>
 				<div class="textarea">
 					<p>The Occupied CIDR list is</p>
-					<textarea id="cidrlist" rows="10" cols="40"></textarea>
+					<textarea id="cidrlist" rows="1" cols="20"></textarea>
 				</div>
+				<pre id="json-output"></pre>
 			</div>
-		</div>
+		</div>	
+		
 	</body>
 </html>
