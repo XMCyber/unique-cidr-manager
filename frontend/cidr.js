@@ -6,26 +6,28 @@ async function get_cidr() {
 	const url = `/get-cidr?subnet_size=${subnet_size}&requiredrange=${requiredrange}&reason=${reason}`;
 
 	try {
-		document.getElementById('cidr').value = "Retrieving unigue cidr..";
+		document.getElementById('cidr_messages').innerHTML = "Retrieving unigue cidr..";
 		const response = await fetch(url);
 		const cidrRes = await response.text();
-		document.getElementById('cidr').value = (cidrRes);
+		document.getElementById('cidr_output').innerHTML = (cidrRes);
+		document.getElementById('cidr_messages').innerHTML = "Done!";
+
 	}
 	catch (e) {
-		document.getElementById('cidr').value = `server error: ${e.message}`;
+		document.getElementById('cidr_messages').innerHTML = `server error: ${e.message}`;
 	}
 }
 
 async function get_occupied_list() {
 	const url = `/get-occupied-list`;
 	try {
-		document.getElementById('cidrlist').value = "Trying to obtain list from GIT repo..";
+		document.getElementById('occupied_messages').innerHTML = "Trying to obtain list from GIT repo..";
 		const response = await fetch(url);
 		const occupiedlist = await response.text();
-		document.getElementById('json-output').innerHTML = occupiedlist;
-		document.getElementById('cidrlist').value = "Done!";
+		document.getElementById('occupied_output').innerHTML = occupiedlist;
+		document.getElementById('occupied_messages').innerHTML = "Done!";
 	}
 	catch (e) {
-		document.getElementById('cidrlist').value = `server error: ${e.message}`;
+		document.getElementById('occupied_messages').innerHTML = `server error: ${e.message}`;
 	}
 }
