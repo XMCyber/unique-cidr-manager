@@ -39,14 +39,28 @@ async function get_next_cidr() {
 
 	const url = `/get-next-cidr-no-push?subnet_size=${subnet_size}&requiredrange=${requiredrange}&reason=${reason}`;
 	try {
-		document.getElementById('next_cidr_messages').innerHTML = "Trying to obtain list from GIT repo..";
+		document.getElementById('cidr_messages').innerHTML = "Trying to obtain list from GIT repo..";
 		const response = await fetch(url);
 		const occupiedlist = await response.text();
-		document.getElementById('next_cidr_output').innerHTML = occupiedlist;
-		document.getElementById('next_cidr_messages').innerHTML = "Done!";
+		document.getElementById('cidr_output').innerHTML = occupiedlist;
+		document.getElementById('cidr_messages').innerHTML = "Done!";
 	}
 	catch (e) {
-		document.getElementById('next_cidr_messages').innerHTML = `server error: ${e.message}`;
+		document.getElementById('cidr_messages').innerHTML = `server error: ${e.message}`;
 	}
 }
 
+async function delete_cidr_from_list() {
+	const cidr_deletion = document.getElementById('cidr_deletion')?.value || '';
+
+	const url = `/delete-cidr-from-list?cidr_deletion=${cidr_deletion}`;
+	try {
+		document.getElementById('delete_messages').innerHTML = "Trying to obtain list from GIT repo..";
+		const response = await fetch(url);
+		const occupiedlist = await response.text();
+		document.getElementById('delete_messages').innerHTML = occupiedlist;
+	}
+	catch (e) {
+		document.getElementById('delete_messages').innerHTML = `server error: ${e.message}`;
+	}
+}
