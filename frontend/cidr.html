@@ -9,8 +9,12 @@
 			integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
 			crossorigin="anonymous"
 		/>
-		<style>
-			h1 {text-align: center;}
+		<style type="text/css">
+			h1 {
+				text-align: center;
+				font-size: 35px;
+				text-shadow: 3px 1px 3px gray;
+			}
 			pre {
         		background-color: #f7f7f7;
         		border: 1px solid #ccc;
@@ -21,6 +25,12 @@
 			html,
 			body {
 				min-height: 100%;
+			}
+			a:hover {
+ 				color: red;
+			}
+			.pointer-link {
+  				cursor: hand;
 			}
 			.wrapper {
 				display: flex;
@@ -99,10 +109,10 @@
 				background-color: #3d7394;
 				font-size: 16px;
 				color: #ffffff;
-				cursor: pointer;
 			}
 			.button1:hover {
 				background-color: #0666a3;
+				cursor: hand;
 			}
 			.button2 {
 				width: 170px;
@@ -114,16 +124,32 @@
 				background-color: #3d7394;
 				font-size: 16px;
 				color: #ffffff;
-				cursor: pointer;
 			}
 			.button2:hover {
 				background-color: #0666a3;
+				cursor: hand;
+			}
+			.button2:active {
+				background-color: #728698;
+  				box-shadow: 0 2px #666;
+  				transform: translateY(1px);
+			}
+			.button1:active {
+				background-color: #6f7c70;
+  				box-shadow: 0 2px #666;
+  				transform: translateY(1px);
+			}
+			footer {
+    			text-align: center;
+			}
+			hr.solid {
+  				border-top: 3px solid #bbb;
 			}
 		</style>
 		<script src="cidr.js"></script>
 	</head>
-	<body>
-		<div class="testbox">
+	<body style="background-color:rgba(233, 239, 236, 0.552);">
+			<div class="testbox">
 			<div class="wrapper">
 				<h1 style="color:#3d7394;">CIDR Manager</h1>
 				<p style="font-size:10px;">version 1.4.2</p>
@@ -150,25 +176,31 @@
 				</div>
 				<div class="textarea">
 					<p>* Please specify the reason (avoid using whitespaces)</p>
-					<textarea id="reason" rows="1" cols="70"></textarea>
+					<textarea style="background-color:rgba(234, 228, 228, 0.552);" id="reason" rows="1" cols="70"></textarea>
 				</div>
 				<div class="button1">
 					<button1 onclick="get_cidr()">Get Unique CIDR</button1>
 				</div>
 				<div class="textarea">
 					<p>The received CIDR is</p>
-					<pre id="cidr_messages"></pre>
-					<pre id="cidr_output"></pre>
+					<pre style="background-color:rgba(234, 228, 228, 0.552);" id="cidr_messages"></pre>
+					<pre style="background-color:rgba(234, 228, 228, 0.552);" id="cidr_output"></pre>
 				</div>
 				<div class="button2">
 					<button2 onclick="get_occupied_list()">Get Occupied CIDR List</button2>
 				</div>
 				<div class="textarea">
 					<p>The Occupied CIDR list is</p>
-					<pre id="occupied_messages"></pre>
-					<pre id="occupied_output"></pre>
+					<pre style="background-color:rgba(234, 228, 228, 0.552);" id="occupied_messages"></pre>
+					<pre style="background-color:rgba(234, 228, 228, 0.552);" id="occupied_output"></pre>
 				</div>
 			</div>
 		</div>	
 	</body>
+	<hr class="solid">
+	<footer>
+		<p>Resources:</p>
+		<p><a target="_blank" href="https://hub.docker.com/r/xmcyber/unique-cidr-manager/tags">DockerHub repository</a></p>
+		<p><a target="_blank" href="https://github.com/XMCyber/unique-cidr-manager">GitHub repository</a></p>
+	</footer>
 </html>
