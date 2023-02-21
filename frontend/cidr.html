@@ -99,12 +99,9 @@
 			}
 			.button1 {
 				width: fit-content;
-				padding: 5px;
-				border: none;
-				-webkit-border-radius: 5px;
-				-moz-border-radius: 5px;
-				border-radius: 5px;
-				background-color: #3d7394;
+				padding: 3px;
+				border-radius: 8px;
+				background-color: #26668b;
 				font-size: 15px;
 				color: #ffffff;
 			}
@@ -159,29 +156,44 @@
 					<p>* Please specify the reason (avoid using whitespaces)</p>
 					<textarea style="background-color:rgba(234, 228, 228, 0.552);" id="reason" rows="1" cols="70"></textarea>
 				</div>
-				<div class="button1">
-					<button1 onclick="get_cidr()">Get Unique CIDR</button1>
+				<div style="display: flex; gap: 10px;" class="button">
+					<button onclick="get_cidr()">Get Unique CIDR</button>
+					<button onclick="get_next_cidr()">Get next available CIDR block</button>
 				</div>
+				
+				
+
 				<div class="textarea">
 					<p>The received CIDR is</p>
 					<pre style="background-color:rgba(234, 228, 228, 0.552);" id="cidr_messages"></pre>
 					<pre style="background-color:rgba(234, 228, 228, 0.552);" id="cidr_output"></pre>
 				</div>
-				<div class="button1">
-					<button1 onclick="get_next_cidr()">Get next available CIDR block</button1>
-				</div>
 				<div class="textarea">
-					<p>The next available CIDR block is</p>
-					<pre style="background-color:rgba(234, 228, 228, 0.552);" id="next_cidr_messages"></pre>
-					<pre style="background-color:rgba(234, 228, 228, 0.552);" id="next_cidr_output"></pre>
+					<hr class="solid">
+					<hr class="solid">
 				</div>
-				<div class="button1">
-					<button1 onclick="get_occupied_list()">Get Occupied CIDR List</button1>
+				<div class="button">
+					<button onclick="get_occupied_list()">Get Occupied CIDR List</button>
 				</div>
 				<div class="textarea">
 					<p>The Occupied CIDR list is</p>
 					<pre style="background-color:rgba(234, 228, 228, 0.552);" id="occupied_messages"></pre>
 					<pre style="background-color:rgba(234, 228, 228, 0.552);" id="occupied_output"></pre>
+				</div>
+				<div class="textarea">
+					<hr class="solid">
+					<hr class="solid">
+				</div>
+				<div class="textarea">
+					<p>* Please specify the CIDR for deletion (for example: 192.168.0.1/24)</p>
+					<textarea style="background-color:rgba(234, 228, 228, 0.552);" id="cidr_deletion" rows="1" cols="70"></textarea>
+				</div>
+				<div class="button">
+					<button onclick="delete_cidr_from_list()">Delete CIDR from List</button>
+				</div>
+				<div class="textarea">
+					<p>Result:</p>
+					<pre style="background-color:rgba(234, 228, 228, 0.552);" id="delete_messages"></pre>
 				</div>
 			</div>
 		</div>	
