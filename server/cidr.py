@@ -32,34 +32,48 @@ def git_clone(repo_dir):
         print(e)
         raise e
 
-class get_cidr():
+def get_subnet(range,subnet_size):
+    occupied = json.load(open(DEST+'/occupied-range.json'))
+    #getting main address range to obtian subnets from it 
+    addresses = json.load(open('addresses-range.json'))
+    main_range = IPv4Network(addresses[range])
+    #getting all possible CIDRs blocks in the range - block size can be modified using /subnet_size/
+    for subnet in main_range.subnets(new_prefix=int(subnet_size)):
+        #getting all accupied CIDRs to compare with
+        is_occupied = False
+        for key in occupied:
+            occupied_cidr = (occupied[key])
+            #checking for cidr availability (not overlapping  awithlready accupied CIDRs)
+            if IPv4Network(subnet).overlaps(IPv4Network(occupied_cidr)): 
+                #if subnet overlaps, go to next CIDR
+                is_occupied = True
+                break
+                #if subnet doesn't overlaps, use this subnet as chosen CIDR
+            else:
+                if str(subnet) == str(occupied_cidr): 
+                    is_occupied = True
+                    break
+        if is_occupied:
+            continue
+        return subnet
+    raise Exception("No available address")
 
-    def get_unique_cidr(subnet_size,requiredrange,reason):
-        def get_subnet(range,subnet_size):
-            #getting main address range to obtian subnets from it 
-            addresses = json.load(open('addresses-range.json'))
-            main_range = IPv4Network(addresses[range])
-            #getting all possible CIDRs blocks in the range - block size can be modified using /subnet_size/
-            for subnet in main_range.subnets(new_prefix=int(subnet_size)):
-                #getting all accupied CIDRs to compare with
-                is_occupied = False
-                for key in occupied:
-                    occupied_cidr = (occupied[key])
-                    #checking for cidr availability (not overlapping  awithlready accupied CIDRs)
-                    if IPv4Network(subnet).overlaps(IPv4Network(occupied_cidr)): 
-                        #if subnet overlaps, go to next CIDR
-                        is_occupied = True
-                        break
-                        #if subnet doesn't overlaps, use this subnet as chosen CIDR
-                    else:
-                        if str(subnet) == str(occupied_cidr): 
-                            is_occupied = True
-                            break
-                if is_occupied:
-                    continue
-                return subnet
-            raise Exception("No available address")
-            
+def check_preconditions(reason, occupied):
+    #checking if reason is empty 
+    if reason == "":
+        return "You must specify reason, this field is mandatory!"
+    #checking if reason was already served and reture existing subnet
+    for key in occupied:
+        #removing epoch time stamp, 10 chars for epoch, 1 char for dash
+        original_reason=key[:len(key)-11]
+        if original_reason == reason:
+            #reason already served - getting allocated CIDR
+            print("reason already served - getting allocated CIDR")
+            subnet=occupied[key]
+            return subnet
+
+class get_cidr():
+    def get_unique_cidr(subnet_size,requiredrange,reason):          
         def write_json(new_data, filename=DEST+'/occupied-range.json'):
             try:
                 with open(filename,'r+') as file:
@@ -81,18 +95,10 @@ class get_cidr():
         #cloning(or pulling if already cloned)
         git_clone(DEST)
         occupied = json.load(open(DEST+'/occupied-range.json'))
-        #checking if reason is empty 
-        if reason == "":
-            return "You must specify reason, this field is mandatory!"
-        #checking if reason was already served and reture existing subnet
-        for key in occupied:
-            #removing epoch time stamp, 10 chars for epoch, 1 char for dash
-            original_reason=key[:len(key)-11]
-            if original_reason == reason:
-                #reason already served - getting allocated CIDR
-                print("reason already served - getting allocated CIDR")
-                subnet=occupied[key]
-                return subnet
+        passed = check_preconditions(reason, occupied)
+        if passed is not None:
+            return passed
+        
         #getting available subnet
         subnet = get_subnet(requiredrange,subnet_size)
         data={reason+ '-' + str(int(time.time())):str(subnet)}
@@ -105,7 +111,17 @@ class get_cidr():
         push_to_repo(DEST)
         #final print for output - used for automaion
         return subnet
-
+    
+    def get_next_cidr_no_push(subnet_size,requiredrange,reason):
+        #this function will only show the next available cidr, but will not save it
+        git_clone(DEST)
+        occupied = json.load(open(DEST+'/occupied-range.json'))
+        passed = check_preconditions(reason, occupied)
+        if passed is not None:
+            return passed
+        subnet = get_subnet(requiredrange,subnet_size)
+        return subnet
+    
     def get_all_occupied():
         git_clone(DEST)
         occupied = json.load(open(DEST+'/occupied-range.json'))
