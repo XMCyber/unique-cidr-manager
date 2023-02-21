@@ -31,3 +31,22 @@ async function get_occupied_list() {
 		document.getElementById('occupied_messages').innerHTML = `server error: ${e.message}`;
 	}
 }
+
+async function get_next_cidr() {
+	const subnet_size = document.getElementById('subnet')?.value || '';
+	const requiredrange = document.getElementById('range')?.value || '';
+	const reason = document.getElementById('reason')?.value || '';
+
+	const url = `/get-next-cidr-no-push?subnet_size=${subnet_size}&requiredrange=${requiredrange}&reason=${reason}`;
+	try {
+		document.getElementById('next_cidr_messages').innerHTML = "Trying to obtain list from GIT repo..";
+		const response = await fetch(url);
+		const occupiedlist = await response.text();
+		document.getElementById('next_cidr_output').innerHTML = occupiedlist;
+		document.getElementById('next_cidr_messages').innerHTML = "Done!";
+	}
+	catch (e) {
+		document.getElementById('next_cidr_messages').innerHTML = `server error: ${e.message}`;
+	}
+}
+
