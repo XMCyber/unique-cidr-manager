@@ -26,6 +26,15 @@ class Server(BaseHTTPRequestHandler):
       requiredrange = query_components["requiredrange"]
       reason = query_components["reason"]
       self.respond_get_next_cidr_no_push(subnet_size,requiredrange,reason)
+
+    if self.path.startswith("/delete-cidr-from-list"):
+      print("delete_cidr_from_list - Request is being served")
+      query = urlparse(self.path).query
+      query_components = dict(qc.split("=") for qc in query.split("&"))
+      print(str(query_components))
+      print(str(query))
+      cidr_deletion = query_components["cidr_deletion"]
+      self.respond_delete_cidr_from_list(cidr_deletion)
    
     if self.path == "/":
       self.path = '/cidr.html'
@@ -106,4 +115,17 @@ class Server(BaseHTTPRequestHandler):
   
   def respond_get_next_cidr_no_push(self,subnet_size,requiredrange,reason):
     content = self.handle_http_get_next_cidr_no_push(200, 'text/html', subnet_size,requiredrange,reason)
+    self.wfile.write(content)
+
+  #### delete-cidr-from-list ####
+  def handle_http_get_delete_cidr_from_list(self, status, content_type, cidr_deletion):
+    self.send_response(status)
+    self.send_header('Content-type', content_type)
+    self.end_headers()
+    result=get_cidr.delete_cidr_from_list(cidr_deletion)
+    print(str(result))
+    return bytes(str(result), "UTF-8")
+  
+  def respond_delete_cidr_from_list(self,cidr_deletion):
+    content = self.handle_http_get_delete_cidr_from_list(200, 'text/html', cidr_deletion)
     self.wfile.write(content)
