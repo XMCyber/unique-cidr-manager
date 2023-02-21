@@ -71,27 +71,26 @@ def check_preconditions(reason, occupied):
             print("reason already served - getting allocated CIDR")
             subnet=occupied[key]
             return subnet
+        
+def write_json(new_data, filename=DEST+'/occupied-range.json'):
+    try:
+        with open(filename,'w') as file:
+            json.dump(new_data, file, indent = 4)
+    except:
+        raise Exception("Error writing to json file")
+
+def push_to_repo(repo_dir, commit_message):
+    file_list = [
+        'occupied-range.json'
+    ]
+    repo = Repo(repo_dir)
+    repo.index.add(file_list)
+    repo.index.commit(commit_message)
+    origin = repo.remote('origin')
+    origin.push()
 
 class get_cidr():
     def get_unique_cidr(subnet_size,requiredrange,reason):          
-        def write_json(new_data, filename=DEST+'/occupied-range.json'):
-            try:
-                with open(filename,'r+') as file:
-                    json.dump(new_data, file, indent = 4)
-            except:
-                raise Exception("Error writing to json file")
-
-        def push_to_repo(repo_dir):
-            file_list = [
-                'occupied-range.json'
-            ]
-            commit_message = 'unique CIDR for ' + reason
-            repo = Repo(repo_dir)
-            repo.index.add(file_list)
-            repo.index.commit(commit_message)
-            origin = repo.remote('origin')
-            origin.push()
-
         #cloning(or pulling if already cloned)
         git_clone(DEST)
         occupied = json.load(open(DEST+'/occupied-range.json'))
@@ -105,10 +104,12 @@ class get_cidr():
         print(data)
         #adding the chosen CIDR to the occupied list 
         occupied.update(data)
+        print(occupied)
         #appending used CIDR to list
         write_json(occupied)
         #pushing for git final update 
-        push_to_repo(DEST)
+        commit_message = 'unique CIDR for ' + reason
+        push_to_repo(DEST, commit_message)
         #final print for output - used for automaion
         return subnet
     
@@ -126,3 +127,20 @@ class get_cidr():
         git_clone(DEST)
         occupied = json.load(open(DEST+'/occupied-range.json'))
         return json.dumps(occupied,indent=4)
+    
+    def delete_cidr_from_list(cidr_block):
+        git_clone(DEST)
+        occupied = json.load(open(DEST+'/occupied-range.json'))
+        keyfound="CIDR not found"
+        for key in occupied:
+            if occupied[key] == cidr_block:
+                print("found requested CIDR " + cidr_block + ", deleing!")
+                del occupied[key]
+                print(occupied)
+                write_json(occupied)
+                commit_message = 'deleting CIDR ' + cidr_block
+                push_to_repo(DEST, commit_message)
+                keyfound=key + " deleted!"
+                print(keyfound)
+                break
+        return keyfound
