@@ -98,39 +98,19 @@
 				text-align: center;
 			}
 			.button1 {
-				width: 120px;
+				width: fit-content;
 				padding: 5px;
 				border: none;
 				-webkit-border-radius: 5px;
 				-moz-border-radius: 5px;
 				border-radius: 5px;
 				background-color: #3d7394;
-				font-size: 16px;
+				font-size: 15px;
 				color: #ffffff;
 			}
 			.button1:hover {
 				background-color: #0666a3;
 				cursor: pointer;
-			}
-			.button2 {
-				width: 170px;
-				padding: 5px;
-				border: none;
-				-webkit-border-radius: 5px;
-				-moz-border-radius: 5px;
-				border-radius: 5px;
-				background-color: #3d7394;
-				font-size: 16px;
-				color: #ffffff;
-			}
-			.button2:hover {
-				background-color: #0666a3;
-				cursor: pointer;
-			}
-			.button2:active {
-				background-color: #728698;
-  				box-shadow: 0 2px #666;
-  				transform: translateY(1px);
 			}
 			.button1:active {
 				background-color: #6f7c70;
@@ -138,7 +118,10 @@
   				transform: translateY(1px);
 			}
 			footer {
-    			text-align: center;
+				
+   				bottom: 0;
+   				width: 100%;
+   				text-align: center;
 			}
 			hr.solid {
   				border-top: 3px solid #bbb;
@@ -184,8 +167,16 @@
 					<pre style="background-color:rgba(234, 228, 228, 0.552);" id="cidr_messages"></pre>
 					<pre style="background-color:rgba(234, 228, 228, 0.552);" id="cidr_output"></pre>
 				</div>
-				<div class="button2">
-					<button2 onclick="get_occupied_list()">Get Occupied CIDR List</button2>
+				<div class="button1">
+					<button1 onclick="get_next_cidr()">Get next available CIDR block</button1>
+				</div>
+				<div class="textarea">
+					<p>The next available CIDR block is</p>
+					<pre style="background-color:rgba(234, 228, 228, 0.552);" id="next_cidr_messages"></pre>
+					<pre style="background-color:rgba(234, 228, 228, 0.552);" id="next_cidr_output"></pre>
+				</div>
+				<div class="button1">
+					<button1 onclick="get_occupied_list()">Get Occupied CIDR List</button1>
 				</div>
 				<div class="textarea">
 					<p>The Occupied CIDR list is</p>
@@ -195,8 +186,8 @@
 			</div>
 		</div>	
 	</body>
-	<hr class="solid">
 	<footer>
+		<hr class="solid">
 		<p>Resources:</p>
 		<p><a target="_blank" href="https://hub.docker.com/r/xmcyber/unique-cidr-manager/tags">DockerHub repository</a></p>
 		<a target="_blank" href="https://github.com/XMCyber/unique-cidr-manager">GitHub repository</a>
