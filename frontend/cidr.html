@@ -1,207 +1,211 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>CIDR Manager</title>
-		<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" />
-		<link
-			rel="stylesheet"
-			href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
-			integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
-			crossorigin="anonymous"
-		/>
-		<style type="text/css">
-			h1 {
-				text-align: center;
-				font-size: 35px;
-				text-shadow: 3px 1px 3px gray;
-			}
-			pre {
-        		background-color: #f7f7f7;
-        		border: 1px solid #ccc;
-        		padding: 10px;
-        		font-size: 14px;
-        		font-family: 'Courier New', Courier, monospace;
-      		}
-			html,
-			body {
-				min-height: 100%;
-			}
-			a:hover {
- 				color: red;
-			}
-
-			.wrapper {
-				display: flex;
-				flex-direction: column;
-			}
-			body,
-			div,
-			form,
-			input,
-			select,
-			p {
-				padding: 0;
-				margin: 0;
-				outline: none;
-				font-family: Roboto, Arial, sans-serif;
-				font-size: 14px;
-				color: #666;
-				line-height: 22px;
-			}
-			h1 {
-				margin: 15px 0;
-				font-weight: 400;
-			}
-			.testbox {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				height: inherit;
-				padding: 3px;
-			}
-			input,
-			select,
-			textarea {
-				margin-bottom: 10px;
-				border: 1px solid #ccc;
-				border-radius: 3px;
-			}
-			input:hover,
-			select:hover,
-			textarea:hover {
-				outline: none;
-				border: 1px solid #095484;
-			}
-			input {
-				width: calc(100% - 10px);
-				padding: 5px;
-			}
-			select {
-				width: 100%;
-				padding: 7px 0;
-				background: transparent;
-			}
-			textarea {
-				width: calc(100% - 6px);
-			}
-			.item {
-				position: relative;
-				margin: 10px 0;
-			}
-			.item i {
-				right: 2%;
-				top: 30px;
-				z-index: 1;
-			}
-			.btn-block {
-				margin-top: 20px;
-				text-align: center;
-			}
-			.button1 {
-				width: fit-content;
-				padding: 3px;
-				border-radius: 8px;
-				background-color: #26668b;
-				font-size: 15px;
-				color: #ffffff;
-			}
-			.button1:hover {
-				background-color: #0666a3;
-				cursor: pointer;
-			}
-			.button1:active {
-				background-color: #6f7c70;
-  				box-shadow: 0 2px #666;
-  				transform: translateY(1px);
-			}
-			footer {
-				
-   				bottom: 0;
-   				width: 100%;
-   				text-align: center;
-			}
-			hr.solid {
-  				border-top: 3px solid #bbb;
-			}
-		</style>
-		<script src="cidr.js"></script>
-	</head>
-	<body style="background-color:rgba(233, 239, 236, 0.552);">
-			<div class="testbox">
-			<div class="wrapper">
-				<h1 style="color:#3d7394;">CIDR Manager</h1>
-				<p style="font-size:10px;">version 1.4.2</p>
-				<p>&nbsp;</p>
-				<p style="font-size:12px; color: red;">Fields marked with * are mandatory</p>
-				<div class="item">
-					<p>* Select Subnet Size</p>
-					<select name="subnet" id="subnet">
-						<option value="28">/28 (16 addresses)</option>
-						<option value="27">/27 (32 addresses)</option>
-						<option value="26">/26 (64 addresses)</option>
-						<option value="25">/25 (128 addresses)</option>
-						<option value="24">/24 (256 addresses)</option>
-						<option value="16">/16 (65,536 addresses)</option>
-					</select>
-				</div>
-				<div class="item">
-					<p>* Select pivate range</p>
-					<select name="range" id="range">
-						<option value="10">10.0.0.0/8</option>
-						<option value="172">172.16.0.0/12</option>
-						<option value="192">192.168.0.0/16</option>
-					</select>
-				</div>
-				<div class="textarea">
-					<p>* Please specify the reason (avoid using whitespaces)</p>
-					<textarea style="background-color:rgba(234, 228, 228, 0.552);" id="reason" rows="1" cols="70"></textarea>
-				</div>
-				<div style="display: flex; gap: 10px;" class="button">
-					<button onclick="get_cidr()">Get Unique CIDR</button>
-					<button onclick="get_next_cidr()">Get next available CIDR block</button>
-				</div>
-				
-				
-
-				<div class="textarea">
-					<p>The received CIDR is</p>
-					<pre style="background-color:rgba(234, 228, 228, 0.552);" id="cidr_messages"></pre>
-					<pre style="background-color:rgba(234, 228, 228, 0.552);" id="cidr_output"></pre>
-				</div>
-				<div class="textarea">
-					<hr class="solid">
-					<hr class="solid">
-				</div>
-				<div class="button">
-					<button onclick="get_occupied_list()">Get Occupied CIDR List</button>
-				</div>
-				<div class="textarea">
-					<p>The Occupied CIDR list is</p>
-					<pre style="background-color:rgba(234, 228, 228, 0.552);" id="occupied_messages"></pre>
-					<pre style="background-color:rgba(234, 228, 228, 0.552);" id="occupied_output"></pre>
-				</div>
-				<div class="textarea">
-					<hr class="solid">
-					<hr class="solid">
-				</div>
-				<div class="textarea">
-					<p>* Please specify the CIDR for deletion (for example: 192.168.0.1/24)</p>
-					<textarea style="background-color:rgba(234, 228, 228, 0.552);" id="cidr_deletion" rows="1" cols="70"></textarea>
-				</div>
-				<div class="button">
-					<button onclick="delete_cidr_from_list()">Delete CIDR from List</button>
-				</div>
-				<div class="textarea">
-					<p>Result:</p>
-					<pre style="background-color:rgba(234, 228, 228, 0.552);" id="delete_messages"></pre>
-				</div>
-			</div>
-		</div>	
-	</body>
-	<footer>
-		<hr class="solid">
-		<p>Resources:</p>
-		<p><a target="_blank" href="https://hub.docker.com/r/xmcyber/unique-cidr-manager/tags">DockerHub repository</a></p>
-		<a target="_blank" href="https://github.com/XMCyber/unique-cidr-manager">GitHub repository</a>
-	</footer>
+   <head>
+      <title>CIDR Manager</title>
+      <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" />
+      <link
+         rel="stylesheet"
+         href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+         integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+         crossorigin="anonymous"
+         />
+      <style type="text/css">
+         .frame {
+         border: 2px solid #ccc;
+         padding: 20px;
+         border-radius: 8px;
+         }
+         h1 {
+         text-align: center;
+         font-size: 35px;
+         text-shadow: 3px 1px 3px gray;
+         }
+         pre {
+         background-color: #f7f7f7;
+         border: 1px solid #ccc;
+         padding: 10px;
+         font-size: 14px;
+         font-family: 'Courier New', Courier, monospace;
+         }
+         html,
+         body {
+         min-height: 100%;
+         }
+         a:hover {
+         color: red;
+         }
+         .wrapper {
+         display: flex;
+         flex-direction: column;
+         }
+         body,
+         div,
+         form,
+         input,
+         select,
+         p {
+         padding: 0;
+         margin: 0;
+         outline: none;
+         font-family: Roboto, Arial, sans-serif;
+         font-size: 14px;
+         color: #666;
+         line-height: 22px;
+         }
+         h1 {
+         margin: 15px 0;
+         font-weight: 400;
+         }
+         .testbox {
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         height: inherit;
+         padding: 3px;
+         }
+         input,
+         select,
+         textarea {
+         margin-bottom: 10px;
+         border: 1px solid #ccc;
+         border-radius: 3px;
+         }
+         input:hover,
+         select:hover,
+         textarea:hover {
+         outline: none;
+         border: 1px solid #095484;
+         }
+         input {
+         width: calc(100% - 10px);
+         padding: 5px;
+         }
+         select {
+         width: 100%;
+         padding: 7px 0;
+         background: transparent;
+         }
+         textarea {
+         width: calc(100% - 6px);
+         }
+         .item {
+         position: relative;
+         margin: 10px 0;
+         }
+         .item i {
+         right: 2%;
+         top: 30px;
+         z-index: 1;
+         }
+         .btn-block {
+         margin-top: 20px;
+         text-align: center;
+         }
+         .button1-container {
+         display: flex;
+         justify-content: center;
+         justify-content: flex-start;
+         }
+         .button1 {
+         width: fit-content;
+         padding: 3px;
+         margin-right: 8px;
+         border-radius: 5px;
+         background-color: #26668b;
+         font-size: 15px;
+         color: #ffffff;
+         }
+         .button1:hover {
+         background-color: #0666a3;
+         cursor: pointer;
+         }
+         .button1:active {
+         background-color: #6f7c70;
+         box-shadow: 0 2px #666;
+         transform: translateY(1px);
+         }
+         footer {
+         bottom: 0;
+         width: 100%;
+         text-align: center;
+         }
+         hr.solid {
+         border-top: 3px solid #bbb;
+         }
+      </style>
+      <script src="cidr.js"></script>
+   </head>
+   <body style="background-color:rgba(233, 239, 236, 0.552);">
+      <div class="testbox">
+         <div class="wrapper">
+            <h1 style="color:#3d7394;">CIDR Manager</h1>
+            <p style="font-size:10px;">version 1.4.2</p>
+            <p>&nbsp;</p>
+            <p style="font-size:12px; color: red;">Fields marked with * are mandatory</p>
+            <div class="frame">
+               <div class="item">
+                  <p>* Select subnet size</p>
+                  <select name="subnet" id="subnet">
+                     <option value="28">/28 (16 addresses)</option>
+                     <option value="27">/27 (32 addresses)</option>
+                     <option value="26">/26 (64 addresses)</option>
+                     <option value="25">/25 (128 addresses)</option>
+                     <option value="24">/24 (256 addresses)</option>
+                     <option value="16">/16 (65,536 addresses)</option>
+                  </select>
+               </div>
+               <div class="item">
+                  <p>* Select private range</p>
+                  <select name="range" id="range">
+                     <option value="10">10.0.0.0/8</option>
+                     <option value="172">172.16.0.0/12</option>
+                     <option value="192">192.168.0.0/16</option>
+                  </select>
+               </div>
+               <div class="textarea">
+                  <p>* Please specify the reason (avoid using whitespaces)</p>
+                  <textarea style="background-color:rgba(234, 228, 228, 0.552);" id="reason" rows="1" cols="70"></textarea>
+               </div>
+               <div class="button1-container">
+                  <button1 class="button1" onclick="get_cidr()" title="Assing permanent Unique CIDR block which will be saved as occupied">Get Unique CIDR</button1>
+                  <button1  class="button1" onclick="get_next_cidr()" title="Shows the next available CIDR block, but not saves it as occupied">Get next available CIDR block</button1>
+               </div>
+               <div class="textarea">
+                  <p>The received CIDR is</p>
+                  <pre style="background-color:rgba(234, 228, 228, 0.552);" id="cidr_messages"></pre>
+                  <pre style="background-color:rgba(234, 228, 228, 0.552);" id="cidr_output"></pre>
+               </div>
+            </div>
+            <div class="frame">
+               <div class="button1">
+                  <button1 onclick="get_occupied_list()" title="Show the current occupied list as saved on Git repository">Get Occupied CIDR List</button1>
+               </div>
+               <div class="textarea">
+                  <p>The Occupied CIDR list is</p>
+                  <pre style="background-color:rgba(234, 228, 228, 0.552);" id="occupied_messages"></pre>
+                  <pre style="background-color:rgba(234, 228, 228, 0.552);" id="occupied_output"></pre>
+               </div>
+            </div>
+            <div class="frame">
+               <div class="textarea">
+                  <p>* Please specify the CIDR for deletion (for example: 192.168.0.1/24)</p>
+                  <textarea style="background-color:rgba(234, 228, 228, 0.552);" id="cidr_deletion" rows="1" cols="70"></textarea>
+               </div>
+               <div class="button1">
+                  <button1 onclick="delete_cidr_from_list()" title="Permanently deletes the chosen CIDR block from occupied list">Delete CIDR from List</button1>
+               </div>
+               <div class="textarea">
+                  <p>Result:</p>
+                  <pre style="background-color:rgba(234, 228, 228, 0.552);" id="delete_messages"></pre>
+               </div>
+            </div>
+         </div>
+      </div>
+   </body>
+   <footer>
+      <hr class="solid">
+      <p>Resources:</p>
+      <p><a target="_blank" href="https://hub.docker.com/r/xmcyber/unique-cidr-manager/tags">DockerHub repository</a></p>
+      <a target="_blank" href="https://github.com/XMCyber/unique-cidr-manager">GitHub repository</a>
+   </footer>
 </html>
