@@ -1,8 +1,7 @@
 # unique-cidr-manager
 ## _A basic tool build to manage unique CIDR across networks_
 
-[![Network](https://www.baeldung.com/wp-content/uploads/sites/4/2021/02/IPV4vsIPV6-1024x718-1.png)]()
-
+![alt text](https://github.com/XMCyber/unique-cidr-manager/blob/master/content/cidr-manager.png)
 
 This tool is built in order to manage the private range ip addresses in the organization network to avoid future potential routing conflicts. 
 
@@ -42,7 +41,23 @@ Verify the deployment by navigating to your server address in
 your preferred browser.
 
 ```sh
-localhost:8000/get-cidr
+http://localhost:8000
+```
+
+Here are some examples for request 
+
+Obtain new CIDR:
+```sh
+http://localhost:8000/get-cidr?subnet_size=${subnet_size}&requiredrange=${required_range}&reason=${reason}
+```
+
+Show all occupied CIDR list:
+```sh
+http://localhost:8000/get-occupied-list
+```
+Delete CIDR from list:
+```sh
+http://localhost:8000/delete-cidr-from-list?cidr_deletion=10.1.2.3/28
 ```
 
 ## License
