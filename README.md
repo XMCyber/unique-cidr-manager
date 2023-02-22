@@ -1,8 +1,7 @@
 # unique-cidr-manager
 ## _A basic tool build to manage unique CIDR across networks_
 
-![alt text](https://github.com/XMCyber/unique-cidr-manager/blob/readme-update/content/cidr-manager.png = 200x400)
-<img src="https://github.com/XMCyber/unique-cidr-manager/blob/readme-update/content/cidr-manager.png" width=50% height=50%>
+<img src="https://github.com/XMCyber/unique-cidr-manager/blob/readme-update/content/cidr-manager.png" width=30% height=30%>
 
 This tool is built in order to manage the private range ip addresses in the organization network to avoid future potential routing conflicts. 
 
