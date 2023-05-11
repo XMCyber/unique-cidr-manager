@@ -88,7 +88,12 @@ def push_to_repo(repo_dir, commit_message):
     repo.index.add(file_list)
     repo.index.commit(commit_message)
     origin = repo.remote('origin')
-    origin.push()
+    try:
+        origin.push()
+    except Exception as e:
+        print(e)
+        print("git error occured - restaring container")
+        os._exit(1)
 
 class get_cidr():
     def get_unique_cidr(subnet_size,requiredrange,reason):          
