@@ -14,7 +14,7 @@ try:
     print("Done loading params")
 except: 
     print("Initial setup failed")
-    print("Make sure all env params are exported: 1)access_token 2)requiredrange")
+    print("Make sure all env params are exported: 1)access_token 2)occupied_repo")
     os._exit(1)
 
 def git_clone(repo_dir):
@@ -30,6 +30,7 @@ def git_clone(repo_dir):
             print("Repo cloned")
     except Exception as e: 
         print(e)
+        
         raise e
 
 def get_subnet(range,subnet_size):
