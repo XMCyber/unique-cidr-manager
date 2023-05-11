@@ -30,9 +30,9 @@ def git_clone(repo_dir):
             print("Repo cloned")
     except Exception as e: 
         print(e)
+        print("git error occured - restaring container")
+        os._exit(1)
         
-        raise e
-
 def get_subnet(range,subnet_size):
     occupied = json.load(open(DEST+'/occupied-range.json'))
     #getting main address range to obtian subnets from it 
