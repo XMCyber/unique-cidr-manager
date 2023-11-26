@@ -25,7 +25,8 @@ async function get_occupied_list() {
 		const response = await fetch(url);
 		const occupiedlist = await response.text();
 		document.getElementById('occupied_output').innerHTML = occupiedlist;
-		document.getElementById('occupied_messages').innerHTML = "Done!";
+		num_elements = len(json.loads(occupiedlist))
+		document.getElementById('occupied_messages').innerHTML = "Done!, Raw count is" + num_elements;
 	}
 	catch (e) {
 		document.getElementById('occupied_messages').innerHTML = `server error: ${e.message}`;
