@@ -97,7 +97,7 @@ body {
 
 select {
    width: 100%;
-   padding: 10px;
+   padding: 7px;
    background: rgba(82, 220, 220, 0.75); /* adjust the opacity using rgba */
    color: #000;
    margin-bottom: 10px;
@@ -107,7 +107,7 @@ select {
 
 textarea {
    width: 100%;
-   padding: 10px;
+   padding: 7px;
    border: 1px solid #05E3FC;
    border-radius: 5px;
    resize: none;
@@ -142,8 +142,9 @@ textarea {
 }
 
 pre {
-   font-family: 'Courier New', monospace;
-   padding: 10px;
+   font-family: 'Tahoma', monospace;
+   font-size: 12px;
+   padding: 12px;
    background-color: #414555;
    border: 1px solid #05E3FC;
    border-radius: 5px;
