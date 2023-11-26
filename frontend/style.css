@@ -86,6 +86,8 @@ body {
 .item,
 .textarea {
    margin-bottom: 20px;
+   width: auto;
+   box-sizing: border-box;
 }
 
 .label {
