@@ -23,10 +23,10 @@ async function get_occupied_list() {
 	try {
 		document.getElementById('occupied_messages').innerHTML = "Trying to obtain list from GIT repo..";
 		const response = await fetch(url);
-		const occupiedlist = await response.text();
-		document.getElementById('occupied_output').innerHTML = occupiedlist;
-		num_elements = len(json.loads(occupiedlist))
-		document.getElementById('occupied_messages').innerHTML = "Done!, Raw count is " + num_elements;
+		const occupiedlist = await response.json();
+		document.getElementById('occupied_output').innerHTML = JSON.stringify(occupiedlist);
+		const num_elements = Object.keys(occupiedlist).length; // Counting elements in the object
+		document.getElementById('occupied_messages').innerHTML = `Done! Raw count is ${num_elements}`;
 	}
 	catch (e) {
 		document.getElementById('occupied_messages').innerHTML = `server error: ${e.message}`;
