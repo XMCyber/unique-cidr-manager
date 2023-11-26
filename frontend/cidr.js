@@ -30,7 +30,7 @@ async function get_occupied_list() {
 	} catch (e) {
 	  document.getElementById('occupied_messages').innerHTML = `Server error: ${e.message}`;
 	}
-  }
+}
 
 async function get_next_cidr() {
 	const subnet_size = document.getElementById('subnet')?.value || '';
