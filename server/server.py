@@ -50,6 +50,13 @@ class Server(BaseHTTPRequestHandler):
       self.send_header('Content-type','text/html')
       self.end_headers()
       self.wfile.write(content)
+
+    if  self.path.endswith(".css"):
+      content = open('frontend'+self.path, 'rb').read()
+      self.send_response(200)
+      self.send_header('Content-type','text/html')
+      self.end_headers()
+      self.wfile.write(content)
     
     if self.path.startswith("/get-subnets"):
       print("get-subnets - Request is being served")
