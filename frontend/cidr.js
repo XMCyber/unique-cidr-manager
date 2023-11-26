@@ -19,19 +19,18 @@ async function get_cidr() {
 }
 
 async function get_occupied_list() {
-	const url = `/get-occupied-list`;
+	const url = '/get-occupied-list';
 	try {
-		document.getElementById('occupied_messages').innerHTML = "Trying to obtain list from GIT repo..";
-		const response = await fetch(url);
-		const occupiedlist = await response.text();
-		document.getElementById('occupied_output').innerHTML = occupiedlist;
-		num_elements = len(json.loads(occupiedlist))
-		document.getElementById('occupied_messages').innerHTML = "Done!, Raw count is " + num_elements;
+	  document.getElementById('occupied_messages').innerHTML = 'Trying to obtain list from GIT repo..';
+	  const response = await fetch(url);
+	  const occupiedlist = await response.json(); // Parse the response as JSON
+	  document.getElementById('occupied_output').innerHTML = JSON.stringify(occupiedlist);
+	  const num_elements = Object.keys(occupiedlist).length; // Counting elements in the object
+	  document.getElementById('occupied_messages').innerHTML = `Done! Raw count is ${num_elements}`;
+	} catch (e) {
+	  document.getElementById('occupied_messages').innerHTML = `Server error: ${e.message}`;
 	}
-	catch (e) {
-		document.getElementById('occupied_messages').innerHTML = `server error: ${e.message}`;
-	}
-}
+  }
 
 async function get_next_cidr() {
 	const subnet_size = document.getElementById('subnet')?.value || '';
