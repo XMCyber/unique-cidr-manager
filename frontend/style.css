@@ -2,13 +2,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap');
 
 .title {
-   font-family: 'Montserrat', sans-serif;
+   font-family: 'Courier New', sans-serif;
    font-size: 50px;
    text-transform: uppercase;
    letter-spacing: 2px;
    color: #FFF;
    text-shadow: 2px 2px 10px #333;
    text-align: center;
+   background-color: #767f6c5c;
+   border-radius: 7px;
 }
 
 .title .version {
@@ -111,7 +113,7 @@ textarea {
    border: 1px solid #05E3FC;
    border-radius: 5px;
    resize: none;
-   background: rgba(5, 227, 252, 0.5); /* adjust the opacity using rgba */
+   background: rgba(5, 227, 252, 0.3); /* adjust the opacity using rgba */
    color: #000;
    box-sizing: border-box;
  }
@@ -143,7 +145,7 @@ textarea {
 
 pre {
    font-family: 'Tahoma', monospace;
-   font-size: 12px;
+   font-size: 14px;
    padding: 12px;
    background-color: #414555;
    border: 1px solid #05E3FC;
