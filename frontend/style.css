@@ -153,6 +153,13 @@ textarea {
    background-color: #0056b3;
 }
 
+/* CSS style block */
+.special-paragraph {
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+  color: rgb(120, 139, 154);
+}
+
 pre {
    font-family: 'Tahoma', monospace;
    font-size: 14px;
