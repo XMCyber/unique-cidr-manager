@@ -1,7 +1,7 @@
 # unique-cidr-manager
 ## _A basic tool build to manage unique CIDR across networks_
 
-![Workflow Status] (https://github.com/xmcyber/unique-cidr-manager/actions/workflows/build-image.yml/badge.svg)
+[![Workflow Status](https://github.com/xmcyber/unique-cidr-manager/actions/workflows/build-image.yml/badge.svg)]
 
 <img src="https://github.com/XMCyber/unique-cidr-manager/blob/master/content/cidr-manager.png" width=40% height=40%>
 
