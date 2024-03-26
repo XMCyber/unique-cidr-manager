@@ -22,3 +22,14 @@ jobs:
             docker build -t xmcyber/unique-cidr-manager:$VERSION .
             echo "Pushing to Docker hub"
             docker push xmcyber/unique-cidr-manager:$VERSION
+
+    security:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@master
+        - name: Run Snyk to check for vulnerabilities
+          uses: snyk/actions/python@master
+          env:
+            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          with:
+            command: monitor
