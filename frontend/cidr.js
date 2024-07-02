@@ -10,7 +10,7 @@ async function get_cidr() {
 	const url = `/get-cidr?subnet_size=${subnet_size}&requiredrange=${requiredrange}&reason=${reason}`;
 
 	try {
-		document.getElementById('cidr_messages').innerHTML = "Retrieving unigue cidr..";
+		document.getElementById('cidr_messages').innerHTML = "Retrieving unique cidr..";
 		document.getElementById('cidr_output').innerHTML = wait_message;
 		const response = await fetch(url);
 		const cidrRes = await response.text();
