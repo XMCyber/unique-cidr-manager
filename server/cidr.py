@@ -75,7 +75,7 @@ def is_valid_cidr(cidr):
     try:
         IPv4Network(cidr)
         return True
-    except AddressValueError:
+    except Exception:
         return False
 
 def check_preconditions(reason, occupied):
@@ -188,5 +188,6 @@ class get_cidr():
         #pushing for git final update 
         commit_message = 'Added CIDR manually ' + reason
         push_to_repo(DEST, commit_message)
+        
         return "CIDR added successfully"
 

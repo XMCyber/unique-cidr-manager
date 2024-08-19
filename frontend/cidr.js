@@ -78,7 +78,7 @@ async function delete_cidr_from_list() {
 
 async function add_cidr_manually() {
 	const cidr = document.getElementById('cidr')?.value || '';
-	const reason = document.getElementById('reason')?.value || '';
+	const reason = document.getElementById('add-reason')?.value || '';
 
 	const url = `/add-cidr-manually?cidr=${cidr}&reason=${reason}`;
 
