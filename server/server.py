@@ -148,7 +148,7 @@ class Server(BaseHTTPRequestHandler):
     self.wfile.write(content)
 
   #### add-cidr-manually ####
-  def handle_add_cidr_manually(self,cidr,reason):
+  def handle_add_cidr_manually(self, status, content_type, cidr,reason):
     self.send_response(status)
     self.send_header('Content-type', content_type)
     self.end_headers()
