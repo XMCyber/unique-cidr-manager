@@ -82,6 +82,23 @@
                <pre id="delete_messages"></pre>
             </div>
          </div>
+         <div class="frame">
+            <div class="textarea">
+               <p>* Please specify the CIDR to add (for example: 192.168.10.1/24)</p>
+               <textarea id="cidr" rows="1" cols="70"></textarea>
+            </div>
+            <div class="textarea">
+               <p>* Please specify reason</p>
+               <textarea id="reason" rows="1" cols="70"></textarea>
+            </div>
+            <div class="button-container">
+               <button class="button" onclick="add_cidr_manually()" title="Manually add CIDR to occupied list">Add CIDR to List</button>
+            </div>
+            <div class="textarea">
+               <p>Result:</p>
+               <pre id="add_messages"></pre>
+            </div>
+         </div>
       </div>
       <footer>
          <hr class="solid">
