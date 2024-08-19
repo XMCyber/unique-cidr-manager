@@ -75,3 +75,23 @@ async function delete_cidr_from_list() {
 		document.getElementById('delete_messages').innerHTML = `Server error: ${e.message}`;
 	}
 }
+
+async function add_cidr_manually() {
+	const cidr = document.getElementById('cidr')?.value || '';
+	const reason = document.getElementById('reason')?.value || '';
+
+	const url = `/add-cidr-manually?cidr=${cidr}&reason=${reason}`;
+
+	try {
+		document.getElementById('add_messages').innerHTML = "Checking if the CIDR is valid and NOT occupied";
+
+		const response = await fetch(url);
+
+		const adding_response = await response.text();
+		document.getElementById('add_messages').innerHTML = adding_response;
+
+	}
+	catch (e) {
+		document.getElementById('add_messages').innerHTML = `Server error: ${e.message}`;
+	}
+}
