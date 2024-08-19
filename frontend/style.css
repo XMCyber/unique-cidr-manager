@@ -1,6 +1,23 @@
 /* style.css */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap');
 
+.dynamic-heading {
+   font-size: 22px;
+   color: #1E88E5;
+   text-transform: uppercase;
+   font-family: 'Gothic', sans-serif;
+   font-weight: bold;
+   letter-spacing: 2px;
+   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+   margin-bottom: 15px;
+   padding-bottom: 20px;
+   transition: transform 0.5s ease-in-out;
+}
+
+.dynamic-heading:hover {
+   transform: translateX(35px) scale(1.1);
+}
+
 .title {
    font-family: 'Courier New', sans-serif;
    font-size: 50px;
