@@ -59,6 +59,25 @@ def get_subnet(range,subnet_size):
         return subnet
     raise Exception("No available address")
 
+def check_overlap(cidr):
+    occupied_cidrs = json.load(open(DEST+'/occupied-range.json'))
+    given_cidr = IPv4Network(cidr)
+    # Checking if the given cidr overlaps with any existing occupied cidr
+    for key, value in occupied_cidrs.items():
+        occupied_cidr = IPv4Network(value)
+        if given_cidr.overlaps(occupied_cidr):
+            return True
+        if str(given_cidr) == str(occupied_cidr): 
+            return True
+    return False
+
+def is_valid_cidr(cidr):
+    try:
+        IPv4Network(cidr)
+        return True
+    except AddressValueError:
+        return False
+
 def check_preconditions(reason, occupied):
     #checking if reason is empty 
     if reason == "":
@@ -150,3 +169,24 @@ class get_cidr():
                 print(keyfound)
                 break
         return keyfound
+
+    def manually_add_cidr(cidr_block, reason):
+        git_clone(DEST)
+        if not is_valid_cidr(cidr_block):
+            return "CIDR is invalid"
+        if check_overlap(cidr_block):
+            return "CIDR already in use"
+
+        occupied = json.load(open(DEST+'/occupied-range.json'))
+        data={reason+ '-' + str(int(time.time())):str(cidr_block)}
+        print(data)
+        #adding the chosen CIDR to the occupied list 
+        occupied.update(data)
+        print(occupied)
+        #appending used CIDR to list
+        write_json(occupied)
+        #pushing for git final update 
+        commit_message = 'Added CIDR manually ' + reason
+        push_to_repo(DEST, commit_message)
+        return "CIDR added successfully"
+
