@@ -10,7 +10,7 @@
    <body>
       <div class="container">
          <h1 class="title">
-            <span class="version">version 2.1.0</span>
+            <span class="version">version 2.1.1</span>
             <span>C</span>
             <span>I</span>
             <span>D</span>
@@ -26,6 +26,7 @@
           </h1>
          <p class="mandatory">Fields marked with * are mandatory</p>
          <div class="frame">
+            <h2 class="dynamic-heading">Get Unique CIDR</h2>
             <div class="item">
                <p class="label">* Select subnet size</p>
                <select name="subnet" id="subnet">
@@ -60,6 +61,7 @@
             </div>
          </div>
          <div class="frame">
+            <h2 class="dynamic-heading">Get Occupied CIDR List</h2>
             <div class="button-container">
                <button class="button" onclick="get_occupied_list()" title="Show the current occupied list as saved on Git repository">Get Occupied CIDR List</button>
             </div>
@@ -70,6 +72,7 @@
             </div>
          </div>
          <div class="frame">
+            <h2 class="dynamic-heading">Delete Specific CIDR From Occupied List</h2>
             <div class="textarea">
                <p>* Please specify the CIDR for deletion (for example: 192.168.0.1/24)</p>
                <textarea id="cidr_deletion" rows="1" cols="70"></textarea>
@@ -83,6 +86,7 @@
             </div>
          </div>
          <div class="frame">
+            <h2 class="dynamic-heading">add specific cidr to occupied List</h2>
             <div class="textarea">
                <p>* Please specify the CIDR to add (for example: 192.168.10.1/24)</p>
                <textarea id="cidr" rows="1" cols="70"></textarea>
