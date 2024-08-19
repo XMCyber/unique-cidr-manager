@@ -3,7 +3,6 @@ from urllib.parse import urlparse
 from cidr import get_cidr
 from subnet import subnets
 from rest_framework import status
-from rest_framework import status
 
 class Server(BaseHTTPRequestHandler): 
   def do_GET(self):
