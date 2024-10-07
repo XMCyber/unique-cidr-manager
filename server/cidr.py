@@ -108,7 +108,7 @@ def push_to_repo(repo_dir, commit_message):
     repo.index.commit(commit_message)
     origin = repo.remote('origin')
     try:
-        origin.push()
+        origin.push().raise_if_error()
     except Exception as e:
         print(e)
         print("git error occured - restaring container")
