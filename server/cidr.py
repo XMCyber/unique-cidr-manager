@@ -9,12 +9,14 @@ try:
     #initial params definition
     access_token = os.environ['access_token']
     occupied_repo = os.environ['occupied_repo']
+    committer_name = os.environ['committer_name']
+    committer_email = os.environ['committer_email']
     HTTPS_REMOTE_URL = 'https://' + access_token + '@github.com/' + occupied_repo
     DEST = 'infra'
     print("Done loading params")
 except: 
     print("Initial setup failed")
-    print("Make sure all env params are exported: 1)access_token 2)occupied_repo")
+    print("Make sure all env vars are provided: 1)access_token 2)occupied_repo 3)committer_name 4)committer_email")
     os._exit(1)
 
 def git_clone(repo_dir):
@@ -104,6 +106,10 @@ def push_to_repo(repo_dir, commit_message):
         'occupied-range.json'
     ]
     repo = Repo(repo_dir)
+    # Set committing user and email
+    with repo.config_writer() as config:
+        config.set_value('user', 'name', committer_name)
+        config.set_value('user', 'email', committer_email)
     repo.index.add(file_list)
     repo.index.commit(commit_message)
     origin = repo.remote('origin')
