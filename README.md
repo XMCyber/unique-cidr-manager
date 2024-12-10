@@ -10,13 +10,14 @@ This tool is built in order to manage the private range ip addresses in the orga
 ## How it Works
 
 - An env file should be provided in order the set all the required parameters using '--env-file .env'  while running docker
-Required parameter name and values:
+Required parameter name and example values:
 
 | name | description | value |
 | ------ | ------ | ------ |
 | access_token | your personal token for the repo that will contain the unique list of occupied CIDRs |  ghp_3KR4U7bxxxxxxxxxxxxx
 | occupied_repo | the name of the owner+repo in github.com | xmcyber/infra |
-
+| committer_email | committer email - will appear as commiter on github | xmcidr
+| committer_name | committer name - will appear as commiter on github | xmcidr
 
 - The tool will first clone a dedicated repo (your own repo) that will maintain the final and unique list of occupide ip ranges. 
 - After getting the required major range, it will start choosing first subnet (cidr) in this range, for example 10.0.0.0/26
