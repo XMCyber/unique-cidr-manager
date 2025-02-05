@@ -9,14 +9,18 @@ try:
     #initial params definition
     access_token = os.environ['access_token']
     occupied_repo = os.environ['occupied_repo']
-    committer_name = os.environ['committer_name']
-    committer_email = os.environ['committer_email']
-    HTTPS_REMOTE_URL = 'https://' + access_token + '@github.com/' + occupied_repo
+    occupied_file = os.environ.get('occupied_file', 'occupied-range.json')
+    committer_name = os.environ.get('committer_name', 'Unique CIDR Manager')
+    committer_email = os.environ.get('committer_email', 'cidr@manager.dev')
+    #set params
+    HTTPS_REMOTE_URL = 'https://' + access_token + '@github.com/' + occupied_repo3
     DEST = 'infra'
+    OCCUPIED_FILE_PATH = f"{DEST}/{occupied_file}"
+
     print("Done loading params")
 except: 
     print("Initial setup failed")
-    print("Make sure all env vars are provided: 1)access_token 2)occupied_repo 3)committer_name 4)committer_email")
+    print("Make sure all env vars are provided: access_token, occupied_repo")
     os._exit(1)
 
 def git_clone(repo_dir):
@@ -36,7 +40,7 @@ def git_clone(repo_dir):
         os._exit(1)
         
 def get_subnet(range,subnet_size):
-    occupied = json.load(open(DEST+'/occupied-range.json'))
+    occupied = json.load(open(OCCUPIED_FILE_PATH))
     #getting main address range to obtian subnets from it 
     addresses = json.load(open('addresses-range.json'))
     main_range = IPv4Network(addresses[range])
@@ -62,7 +66,7 @@ def get_subnet(range,subnet_size):
     raise Exception("No available address")
 
 def check_overlap(cidr):
-    occupied_cidrs = json.load(open(DEST+'/occupied-range.json'))
+    occupied_cidrs = json.load(open(OCCUPIED_FILE_PATH))
     given_cidr = IPv4Network(cidr)
     # Checking if the given cidr overlaps with any existing occupied cidr
     for key, value in occupied_cidrs.items():
@@ -94,7 +98,7 @@ def check_preconditions(reason, occupied):
             subnet=occupied[key]
             return subnet
         
-def write_json(new_data, filename=DEST+'/occupied-range.json'):
+def write_json(new_data, filename=OCCUPIED_FILE_PATH):
     try:
         with open(filename,'w') as file:
             json.dump(new_data, file, indent = 4)
@@ -102,9 +106,7 @@ def write_json(new_data, filename=DEST+'/occupied-range.json'):
         raise Exception("Error writing to json file")
 
 def push_to_repo(repo_dir, commit_message):
-    file_list = [
-        'occupied-range.json'
-    ]
+    file_list = [occupied_file]
     repo = Repo(repo_dir)
     # Set committing user and email
     with repo.config_writer() as config:
@@ -124,7 +126,7 @@ class get_cidr():
     def get_unique_cidr(subnet_size,requiredrange,reason):          
         #cloning(or pulling if already cloned)
         git_clone(DEST)
-        occupied = json.load(open(DEST+'/occupied-range.json'))
+        occupied = json.load(open(OCCUPIED_FILE_PATH))
         passed = check_preconditions(reason, occupied)
         if passed is not None:
             return passed
@@ -147,7 +149,7 @@ class get_cidr():
     def get_next_cidr_no_push(subnet_size,requiredrange,reason):
         #this function will only show the next available cidr, but will not save it
         git_clone(DEST)
-        occupied = json.load(open(DEST+'/occupied-range.json'))
+        occupied = json.load(open(OCCUPIED_FILE_PATH))
         passed = check_preconditions(reason, occupied)
         if passed is not None:
             return passed
@@ -156,12 +158,12 @@ class get_cidr():
     
     def get_all_occupied():
         git_clone(DEST)
-        occupied = json.load(open(DEST+'/occupied-range.json'))
+        occupied = json.load(open(OCCUPIED_FILE_PATH))
         return json.dumps(occupied,indent=4)
     
     def delete_cidr_from_list(cidr_block):
         git_clone(DEST)
-        occupied = json.load(open(DEST+'/occupied-range.json'))
+        occupied = json.load(open(OCCUPIED_FILE_PATH))
         keyfound="CIDR not found"
         for key in occupied:
             if occupied[key] == cidr_block:
@@ -183,7 +185,7 @@ class get_cidr():
         if check_overlap(cidr_block):
             return "CIDR already in use"
 
-        occupied = json.load(open(DEST+'/occupied-range.json'))
+        occupied = json.load(open(OCCUPIED_FILE_PATH))
         data={reason+ '-' + str(int(time.time())):str(cidr_block)}
         print(data)
         #adding the chosen CIDR to the occupied list 
