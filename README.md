@@ -16,6 +16,7 @@ Required parameter name and example values:
 | ------ | ------ | ------ |
 | access_token | your personal token for the repo that will contain the unique list of occupied CIDRs |  ghp_3KR4U7bxxxxxxxxxxxxx
 | occupied_repo | the name of the owner+repo in github.com | xmcyber/infra |
+| occupied_file | the name of the json file for keeping the occupied state | occupied-range.json |
 | committer_email | committer email - will appear as commiter on github | xmcidr
 | committer_name | committer name - will appear as commiter on github | xmcidr
 
