@@ -5,7 +5,6 @@ from subnet import subnets
 
 
 class Server(BaseHTTPRequestHandler):
-    
     def do_GET(self):
         if self.path.startswith("/get-cidr"):
             print("get-cidr - Request is being served")
@@ -84,7 +83,6 @@ class Server(BaseHTTPRequestHandler):
             print("get-occupied-list - Request is being served")
             self.respond_get_occupied_list()
 
-
     #### get_unique_cidr ####
     def handle_http_cidr(self, status, content_type, subnet_size, requiredrange, reason):
         self.send_response(status)
@@ -94,11 +92,9 @@ class Server(BaseHTTPRequestHandler):
         print(str(result))
         return bytes(str(result), "UTF-8")
 
-    
     def respond_cidr(self, subnet_size, requiredrange, reason):
         content = self.handle_http_cidr(200, 'text/html', subnet_size, requiredrange, reason)
         self.wfile.write(content)
-
 
     #### get_subnets_from_cidr ####
     def handle_http_subnets(self, status, content_type, subnet_size, cidr):
@@ -109,11 +105,9 @@ class Server(BaseHTTPRequestHandler):
         print(str(result))
         return bytes(str(result), "UTF-8")
 
-    
     def respond_subnets(self, subnet_size, cidr):
         content = self.handle_http_subnets(200, 'text/html', subnet_size, cidr)
         self.wfile.write(content)
-
 
     #### get_all_occupied ####
     def handle_get_occupied_list(self, status, content_type):
@@ -124,11 +118,9 @@ class Server(BaseHTTPRequestHandler):
         print(str(result))
         return bytes(str(result), "UTF-8")
 
-
     def respond_get_occupied_list(self):
         content = self.handle_get_occupied_list(200, 'text/html')
         self.wfile.write(content)
-
 
     #### get-next-cidr-no-push ####
     def handle_http_get_next_cidr_no_push(self, status, content_type, subnet_size, requiredrange, reason):
@@ -139,11 +131,9 @@ class Server(BaseHTTPRequestHandler):
         print(str(result))
         return bytes(str(result), "UTF-8")
 
-    
     def respond_get_next_cidr_no_push(self, subnet_size, requiredrange, reason):
         content = self.handle_http_get_next_cidr_no_push(200, 'text/html', subnet_size, requiredrange, reason)
         self.wfile.write(content)
-
 
     #### delete-cidr-from-list ####
     def handle_http_get_delete_cidr_from_list(self, status, content_type, cidr_deletion):
@@ -154,11 +144,9 @@ class Server(BaseHTTPRequestHandler):
         print(str(result))
         return bytes(str(result), "UTF-8")
 
-    
     def respond_delete_cidr_from_list(self, cidr_deletion):
         content = self.handle_http_get_delete_cidr_from_list(200, 'text/html', cidr_deletion)
         self.wfile.write(content)
-
 
     #### add-cidr-manually ####
     def handle_add_cidr_manually(self, status, content_type, cidr, reason):
@@ -169,7 +157,6 @@ class Server(BaseHTTPRequestHandler):
         print(str(result))
         return bytes(str(result), "UTF-8")
 
-    
     def respond_add_cidr_manually(self, cidr, reason):
         content = self.handle_add_cidr_manually(200, 'text/html', cidr, reason)
         self.wfile.write(content)
