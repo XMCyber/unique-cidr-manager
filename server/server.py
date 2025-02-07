@@ -87,7 +87,7 @@ class Server(BaseHTTPRequestHandler):
     self.send_response(status)
     self.send_header('Content-type', content_type)
     self.end_headers()
-    result=get_cidr.get_unique_cidr(subnet_size, requiredrange, reason)
+    result = get_cidr.get_unique_cidr(subnet_size, requiredrange, reason)
     print(str(result))
     return bytes(str(result), "UTF-8")
   
@@ -100,7 +100,7 @@ class Server(BaseHTTPRequestHandler):
     self.send_response(status)
     self.send_header('Content-type', content_type)
     self.end_headers()
-    result=subnets.get_subnets_from_cidr(subnet_size,cidr)
+    result = subnets.get_subnets_from_cidr(subnet_size,cidr)
     print(str(result))
     return bytes(str(result), "UTF-8")
   
@@ -113,7 +113,7 @@ class Server(BaseHTTPRequestHandler):
     self.send_response(status)
     self.send_header('Content-type', content_type)
     self.end_headers()
-    result=get_cidr.get_all_occupied()
+    result = get_cidr.get_all_occupied()
     print(str(result))
     return bytes(str(result), "UTF-8")
 
@@ -126,7 +126,7 @@ class Server(BaseHTTPRequestHandler):
     self.send_response(status)
     self.send_header('Content-type', content_type)
     self.end_headers()
-    result=get_cidr.get_next_cidr_no_push(subnet_size, requiredrange, reason)
+    result = get_cidr.get_next_cidr_no_push(subnet_size, requiredrange, reason)
     print(str(result))
     return bytes(str(result), "UTF-8")
   
@@ -139,7 +139,7 @@ class Server(BaseHTTPRequestHandler):
     self.send_response(status)
     self.send_header('Content-type', content_type)
     self.end_headers()
-    result=get_cidr.delete_cidr_from_list(cidr_deletion)
+    result = get_cidr.delete_cidr_from_list(cidr_deletion)
     print(str(result))
     return bytes(str(result), "UTF-8")
   
@@ -152,10 +152,10 @@ class Server(BaseHTTPRequestHandler):
     self.send_response(status)
     self.send_header('Content-type', content_type)
     self.end_headers()
-    result=get_cidr.manually_add_cidr(cidr,reason)
+    result = get_cidr.manually_add_cidr(cidr, reason)
     print(str(result))
     return bytes(str(result), "UTF-8")
 
-  def respond_add_cidr_manually(self,cidr,reason):
+  def respond_add_cidr_manually(self, cidr, reason):
     content = self.handle_add_cidr_manually(200, 'text/html', cidr, reason)
     self.wfile.write(content)
