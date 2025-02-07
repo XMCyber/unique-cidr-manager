@@ -6,13 +6,13 @@ os.environ["GIT_PYTHON_REFRESH"] = "quiet"
 from git import Repo
 
 try:
-    #initial params definition
+    # initial params definition
     access_token = os.environ['access_token']
     occupied_repo = os.environ['occupied_repo']
     occupied_file = os.environ.get('occupied_file', 'occupied-range.json')
     committer_name = os.environ.get('committer_name', 'Unique CIDR Manager')
     committer_email = os.environ.get('committer_email', 'cidr@manager.dev')
-    #set params
+    # set params
     HTTPS_REMOTE_URL = 'https://' + access_token + '@github.com/' + occupied_repo
     DEST = 'infra'
     OCCUPIED_FILE_PATH = f"{DEST}/{occupied_file}"
@@ -30,7 +30,7 @@ def git_clone(repo_dir):
             repo = Repo(repo_dir)
             repo.remotes.origin.pull()
         else:        
-            #cloning the infra repo
+            # cloning the infra repo
             print("Cloning")
             Repo.clone_from(HTTPS_REMOTE_URL, DEST)
             print("Repo cloned")
@@ -39,23 +39,23 @@ def git_clone(repo_dir):
         print("git error occured - restaring container")
         os._exit(1)
         
-def get_subnet(range,subnet_size):
+def get_subnet(range, subnet_size):
     occupied = json.load(open(OCCUPIED_FILE_PATH))
-    #getting main address range to obtian subnets from it 
+    # getting main address range to obtian subnets from it 
     addresses = json.load(open('addresses-range.json'))
     main_range = IPv4Network(addresses[range])
-    #getting all possible CIDRs blocks in the range - block size can be modified using /subnet_size/
+    # getting all possible CIDRs blocks in the range - block size can be modified using /subnet_size/
     for subnet in main_range.subnets(new_prefix=int(subnet_size)):
-        #getting all accupied CIDRs to compare with
+        # getting all accupied CIDRs to compare with
         is_occupied = False
         for key in occupied:
             occupied_cidr = (occupied[key])
-            #checking for cidr availability (not overlapping  awithlready accupied CIDRs)
+            # checking for cidr availability (not overlapping  awithlready accupied CIDRs)
             if IPv4Network(subnet).overlaps(IPv4Network(occupied_cidr)): 
-                #if subnet overlaps, go to next CIDR
+                # if subnet overlaps, go to next CIDR
                 is_occupied = True
                 break
-                #if subnet doesn't overlaps, use this subnet as chosen CIDR
+                # if subnet doesn't overlaps, use this subnet as chosen CIDR
             else:
                 if str(subnet) == str(occupied_cidr): 
                     is_occupied = True
@@ -85,15 +85,15 @@ def is_valid_cidr(cidr):
         return False
 
 def check_preconditions(reason, occupied):
-    #checking if reason is empty 
+    # checking if reason is empty 
     if reason == "":
         return "You must specify reason, this field is mandatory!"
-    #checking if reason was already served and reture existing subnet
+    # checking if reason was already served and reture existing subnet
     for key in occupied:
-        #removing epoch time stamp, 10 chars for epoch, 1 char for dash
+        # removing epoch time stamp, 10 chars for epoch, 1 char for dash
         original_reason=key[:len(key)-11]
         if original_reason == reason:
-            #reason already served - getting allocated CIDR
+            # reason already served - getting allocated CIDR
             print("reason already served - getting allocated CIDR")
             subnet=occupied[key]
             return subnet
@@ -123,31 +123,31 @@ def push_to_repo(repo_dir, commit_message):
         os._exit(1)
 
 class get_cidr():
-    def get_unique_cidr(subnet_size,requiredrange,reason):          
-        #cloning(or pulling if already cloned)
+    def get_unique_cidr(subnet_size, requiredrange, reason):          
+        # cloning(or pulling if already cloned)
         git_clone(DEST)
         occupied = json.load(open(OCCUPIED_FILE_PATH))
         passed = check_preconditions(reason, occupied)
         if passed is not None:
             return passed
         
-        #getting available subnet
+        # getting available subnet
         subnet = get_subnet(requiredrange,subnet_size)
         data={reason+ '-' + str(int(time.time())):str(subnet)}
         print(data)
-        #adding the chosen CIDR to the occupied list 
+        # adding the chosen CIDR to the occupied list 
         occupied.update(data)
         print(occupied)
-        #appending used CIDR to list
+        # appending used CIDR to list
         write_json(occupied)
-        #pushing for git final update 
+        # pushing for git final update 
         commit_message = 'unique CIDR for ' + reason
         push_to_repo(DEST, commit_message)
-        #final print for output - used for automaion
+        # final print for output - used for automaion
         return subnet
     
-    def get_next_cidr_no_push(subnet_size,requiredrange,reason):
-        #this function will only show the next available cidr, but will not save it
+    def get_next_cidr_no_push(subnet_size, requiredrange, reason):
+        # this function will only show the next available cidr, but will not save it
         git_clone(DEST)
         occupied = json.load(open(OCCUPIED_FILE_PATH))
         passed = check_preconditions(reason, occupied)
@@ -188,14 +188,13 @@ class get_cidr():
         occupied = json.load(open(OCCUPIED_FILE_PATH))
         data={reason+ '-' + str(int(time.time())):str(cidr_block)}
         print(data)
-        #adding the chosen CIDR to the occupied list 
+        # adding the chosen CIDR to the occupied list 
         occupied.update(data)
         print(occupied)
-        #appending used CIDR to list
+        # appending used CIDR to list
         write_json(occupied)
-        #pushing for git final update 
+        # pushing for git final update 
         commit_message = 'Added CIDR manually ' + reason
         push_to_repo(DEST, commit_message)
         
         return "CIDR added successfully"
-
