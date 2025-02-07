@@ -102,7 +102,6 @@ def write_json(new_data, filename=OCCUPIED_FILE_PATH):
     except IOError as e:
         raise Exception("Error writing to JSON file: " + str(e))
 
-
 def push_to_repo(repo_dir, commit_message):
     file_list = [occupied_file]
     repo = Repo(repo_dir)
@@ -125,7 +124,7 @@ def push_to_repo(repo_dir, commit_message):
 
 
 class GetCIDR:
-    
+
     def get_unique_cidr(subnet_size, required_range, reason):          
         # Cloning (or pulling if already cloned)
         git_clone(DEST)
@@ -153,7 +152,6 @@ class GetCIDR:
         
         # Final print for output - used for automation
         return subnet
-    
 
     def get_next_cidr_no_push(subnet_size, required_range, reason):
         # This function will only show the next available CIDR, but will not save it
@@ -167,12 +165,10 @@ class GetCIDR:
         subnet = get_subnet(required_range, subnet_size)
         return subnet
     
-
     def get_all_occupied():
         git_clone(DEST)
         occupied = json.load(open(OCCUPIED_FILE_PATH))
         return json.dumps(occupied, indent=4)
-    
 
     def delete_cidr_from_list(cidr_block):
         git_clone(DEST)
@@ -193,7 +189,6 @@ class GetCIDR:
                 
         return key_found
     
-
     def manually_add_cidr(cidr_block, reason):
         git_clone(DEST)
         
