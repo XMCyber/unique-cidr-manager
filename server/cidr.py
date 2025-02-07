@@ -102,6 +102,7 @@ def write_json(new_data, filename=OCCUPIED_FILE_PATH):
     except IOError as e:
         raise Exception("Error writing to JSON file: " + str(e))
 
+
 def push_to_repo(repo_dir, commit_message):
     file_list = [occupied_file]
     repo = Repo(repo_dir)
