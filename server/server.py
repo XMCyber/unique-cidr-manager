@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse
-from cidr import get_cidr
-from subnet import subnets
+from cidr import GetCIDR
+from subnet import Subnets
 
 
 class Server(BaseHTTPRequestHandler):
@@ -88,7 +88,7 @@ class Server(BaseHTTPRequestHandler):
         self.send_response(status)
         self.send_header('Content-type', content_type)
         self.end_headers()
-        result = get_cidr.get_unique_cidr(subnet_size, requiredrange, reason)
+        result = GetCIDR.get_unique_cidr(subnet_size, requiredrange, reason)
         print(str(result))
         return bytes(str(result), "UTF-8")
 
@@ -101,7 +101,7 @@ class Server(BaseHTTPRequestHandler):
         self.send_response(status)
         self.send_header('Content-type', content_type)
         self.end_headers()
-        result = subnets.get_subnets_from_cidr(subnet_size, cidr)
+        result = Subnets.get_subnets_from_cidr(subnet_size, cidr)
         print(str(result))
         return bytes(str(result), "UTF-8")
 
@@ -114,7 +114,7 @@ class Server(BaseHTTPRequestHandler):
         self.send_response(status)
         self.send_header('Content-type', content_type)
         self.end_headers()
-        result = get_cidr.get_all_occupied()
+        result = GetCIDR.get_all_occupied()
         print(str(result))
         return bytes(str(result), "UTF-8")
 
@@ -127,7 +127,7 @@ class Server(BaseHTTPRequestHandler):
         self.send_response(status)
         self.send_header('Content-type', content_type)
         self.end_headers()
-        result = get_cidr.get_next_cidr_no_push(subnet_size, requiredrange, reason)
+        result = GetCIDR.get_next_cidr_no_push(subnet_size, requiredrange, reason)
         print(str(result))
         return bytes(str(result), "UTF-8")
 
@@ -140,7 +140,7 @@ class Server(BaseHTTPRequestHandler):
         self.send_response(status)
         self.send_header('Content-type', content_type)
         self.end_headers()
-        result = get_cidr.delete_cidr_from_list(cidr_deletion)
+        result = GetCIDR.delete_cidr_from_list(cidr_deletion)
         print(str(result))
         return bytes(str(result), "UTF-8")
 
@@ -153,7 +153,7 @@ class Server(BaseHTTPRequestHandler):
         self.send_response(status)
         self.send_header('Content-type', content_type)
         self.end_headers()
-        result = get_cidr.manually_add_cidr(cidr, reason)
+        result = GetCIDR.manually_add_cidr(cidr, reason)
         print(str(result))
         return bytes(str(result), "UTF-8")
 
