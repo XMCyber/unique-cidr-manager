@@ -13,7 +13,7 @@ try:
     committer_name = os.environ.get('committer_name', 'Unique CIDR Manager')
     committer_email = os.environ.get('committer_email', 'cidr@manager.dev')
     #set params
-    HTTPS_REMOTE_URL = 'https://' + access_token + '@github.com/' + occupied_repo3
+    HTTPS_REMOTE_URL = 'https://' + access_token + '@github.com/' + occupied_repo
     DEST = 'infra'
     OCCUPIED_FILE_PATH = f"{DEST}/{occupied_file}"
 
