@@ -18,9 +18,10 @@ try:
     OCCUPIED_FILE_PATH = f"{DEST}/{occupied_file}"
 
     print("Done loading params")
-except: 
+except Exception as e: 
     print("Initial setup failed")
     print("Make sure all env vars are provided: access_token, occupied_repo")
+    print(e)
     os._exit(1)
 
 def git_clone(repo_dir):
@@ -96,7 +97,7 @@ def check_preconditions(reason, occupied):
     # checking if reason was already served and reture existing subnet
     for key in occupied:
         # removing epoch time stamp, 10 chars for epoch, 1 char for dash
-        original_reason=key[:len(key)-11]
+        original_reason = key[:len(key)-11]
         if original_reason == reason:
             # reason already served - getting allocated CIDR
             print("reason already served - getting allocated CIDR")
@@ -141,7 +142,7 @@ class get_cidr():
         
         # getting available subnet
         subnet = get_subnet(requiredrange,subnet_size)
-        data={reason+ '-' + str(int(time.time())):str(subnet)}
+        data={reason+ '-' + str(int(time.time())): str(subnet)}
         print(data)
         # adding the chosen CIDR to the occupied list 
         occupied.update(data)
@@ -175,7 +176,7 @@ class get_cidr():
 
         git_clone(DEST)
         occupied = json.load(open(OCCUPIED_FILE_PATH))
-        keyfound="CIDR not found"
+        keyfound = "CIDR not found"
         for key in occupied:
             if occupied[key] == cidr_block:
                 print("found requested CIDR " + cidr_block + ", deleing!")
