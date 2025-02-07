@@ -25,13 +25,14 @@ except KeyError:
     print("Make sure all env vars are provided: access_token, occupied_repo")
     os._exit(1)
 
+
 def git_clone(repo_dir):
     try:
         if os.path.exists(DEST):
             print("Repo already exists - pulling (refresh state)")
             repo = Repo(repo_dir)
             repo.remotes.origin.pull()
-        else:        
+        else:
             # Cloning the infra repo
             print("Cloning")
             Repo.clone_from(HTTPS_REMOTE_URL, DEST)
@@ -40,6 +41,7 @@ def git_clone(repo_dir):
         print("Git error occurred - restarting container")
         print(e)
         os._exit(1)
+
 
 def get_subnet(range_key, subnet_size):
     occupied = json.load(open(OCCUPIED_FILE_PATH))
@@ -60,6 +62,7 @@ def get_subnet(range_key, subnet_size):
             
     raise Exception("No available address")
 
+
 def check_overlap(cidr):
     occupied_cidrs = json.load(open(OCCUPIED_FILE_PATH))
     given_cidr = IPv4Network(cidr)
@@ -70,12 +73,14 @@ def check_overlap(cidr):
             return True
     return False
 
+
 def is_valid_cidr(cidr):
     try:
         IPv4Network(cidr)
         return True
     except ValueError:
         return False
+
 
 def check_preconditions(reason, occupied):
     # Checking if reason is empty 
@@ -89,12 +94,14 @@ def check_preconditions(reason, occupied):
             print("Reason already served - getting allocated CIDR")
             return occupied[key]
 
+
 def write_json(new_data, filename=OCCUPIED_FILE_PATH):
     try:
         with open(filename, 'w') as file:
             json.dump(new_data, file, indent=4)
     except IOError as e:
         raise Exception("Error writing to JSON file: " + str(e))
+
 
 def push_to_repo(repo_dir, commit_message):
     file_list = [occupied_file]
@@ -115,6 +122,7 @@ def push_to_repo(repo_dir, commit_message):
         print("Git error occurred - restarting container")
         print(e)
         os._exit(1)
+
 
 class GetCIDR:
     
@@ -146,6 +154,7 @@ class GetCIDR:
         # Final print for output - used for automation
         return subnet
     
+
     def get_next_cidr_no_push(subnet_size, required_range, reason):
         # This function will only show the next available CIDR, but will not save it
         git_clone(DEST)
@@ -158,11 +167,13 @@ class GetCIDR:
         subnet = get_subnet(required_range, subnet_size)
         return subnet
     
+
     def get_all_occupied():
         git_clone(DEST)
         occupied = json.load(open(OCCUPIED_FILE_PATH))
         return json.dumps(occupied, indent=4)
     
+
     def delete_cidr_from_list(cidr_block):
         git_clone(DEST)
         occupied = json.load(open(OCCUPIED_FILE_PATH))
@@ -181,6 +192,7 @@ class GetCIDR:
                 break
                 
         return key_found
+    
 
     def manually_add_cidr(cidr_block, reason):
         git_clone(DEST)
