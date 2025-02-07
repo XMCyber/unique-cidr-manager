@@ -14,7 +14,7 @@ class Server(BaseHTTPRequestHandler):
       subnet_size = query_components["subnet_size"]
       requiredrange = query_components["requiredrange"]
       reason = query_components["reason"]
-      self.respond_cidr(subnet_size,requiredrange,reason)
+      self.respond_cidr(subnet_size, requiredrange, reason)
     
     if self.path.startswith("/get-next-cidr-no-push"):
       print("get-next-cidr-no-push - Request is being served")
@@ -25,7 +25,7 @@ class Server(BaseHTTPRequestHandler):
       subnet_size = query_components["subnet_size"]
       requiredrange = query_components["requiredrange"]
       reason = query_components["reason"]
-      self.respond_get_next_cidr_no_push(subnet_size,requiredrange,reason)
+      self.respond_get_next_cidr_no_push(subnet_size, requiredrange, reason)
 
     if self.path.startswith("/delete-cidr-from-list"):
       print("delete_cidr_from_list - Request is being served")
@@ -76,27 +76,27 @@ class Server(BaseHTTPRequestHandler):
       print(str(query))
       subnet_size = query_components["subnet_size"]
       cidr = query_components["cidr"]
-      self.respond_sunbets(subnet_size,cidr)
+      self.respond_sunbets(subnet_size, cidr)
     
     if self.path.startswith("/get-occupied-list"):
       print("get-occupied-list - Request is being served")
       self.respond_get_occupied_list()
   
   #### get_unique_cidr ####
-  def handle_http_cidr(self, status, content_type, subnet_size,requiredrange,reason):
+  def handle_http_cidr(self, status, content_type, subnet_size, requiredrange, reason):
     self.send_response(status)
     self.send_header('Content-type', content_type)
     self.end_headers()
-    result=get_cidr.get_unique_cidr(subnet_size,requiredrange,reason)
+    result=get_cidr.get_unique_cidr(subnet_size, requiredrange, reason)
     print(str(result))
     return bytes(str(result), "UTF-8")
   
   def respond_cidr(self,subnet_size,requiredrange,reason):
-    content = self.handle_http_cidr(200, 'text/html', subnet_size,requiredrange,reason)
+    content = self.handle_http_cidr(200, 'text/html', subnet_size, requiredrange, reason)
     self.wfile.write(content)
   
   #### get_subnets_from_cidr ####
-  def handle_http_subnets(self, status, content_type, subnet_size,cidr):
+  def handle_http_subnets(self, status, content_type, subnet_size, cidr):
     self.send_response(status)
     self.send_header('Content-type', content_type)
     self.end_headers()
@@ -105,7 +105,7 @@ class Server(BaseHTTPRequestHandler):
     return bytes(str(result), "UTF-8")
   
   def respond_sunbets(self,subnet_size,cidr):
-    content = self.handle_http_subnets(200, 'text/html', subnet_size,cidr)
+    content = self.handle_http_subnets(200, 'text/html', subnet_size, cidr)
     self.wfile.write(content)
 
   #### get_all_occupied ####
@@ -122,16 +122,16 @@ class Server(BaseHTTPRequestHandler):
     self.wfile.write(content)
 
   #### get-next-cidr-no-push ####
-  def handle_http_get_next_cidr_no_push(self, status, content_type, subnet_size,requiredrange,reason):
+  def handle_http_get_next_cidr_no_push(self, status, content_type, subnet_size, requiredrange, reason):
     self.send_response(status)
     self.send_header('Content-type', content_type)
     self.end_headers()
-    result=get_cidr.get_next_cidr_no_push(subnet_size,requiredrange,reason)
+    result=get_cidr.get_next_cidr_no_push(subnet_size, requiredrange, reason)
     print(str(result))
     return bytes(str(result), "UTF-8")
   
   def respond_get_next_cidr_no_push(self,subnet_size,requiredrange,reason):
-    content = self.handle_http_get_next_cidr_no_push(200, 'text/html', subnet_size,requiredrange,reason)
+    content = self.handle_http_get_next_cidr_no_push(200, 'text/html', subnet_size, requiredrange, reason)
     self.wfile.write(content)
 
   #### delete-cidr-from-list ####
@@ -148,7 +148,7 @@ class Server(BaseHTTPRequestHandler):
     self.wfile.write(content)
 
   #### add-cidr-manually ####
-  def handle_add_cidr_manually(self, status, content_type, cidr,reason):
+  def handle_add_cidr_manually(self, status, content_type, cidr, reason):
     self.send_response(status)
     self.send_header('Content-type', content_type)
     self.end_headers()
@@ -157,5 +157,5 @@ class Server(BaseHTTPRequestHandler):
     return bytes(str(result), "UTF-8")
 
   def respond_add_cidr_manually(self,cidr,reason):
-    content = self.handle_add_cidr_manually(200, 'text/html', cidr,reason)
+    content = self.handle_add_cidr_manually(200, 'text/html', cidr, reason)
     self.wfile.write(content)
