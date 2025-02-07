@@ -41,6 +41,12 @@ def git_clone(repo_dir):
         print("Git error occurred - restarting container")
         print(e)
         os._exit(1)
+    
+    # check if file exists, if not create it
+    if not os.path.exists(OCCUPIED_FILE_PATH):
+        print("Creating empty json state file")
+        with open(OCCUPIED_FILE_PATH, 'w') as file:
+            json.dump({}, file)
 
 
 def get_subnet(range_key, subnet_size):
