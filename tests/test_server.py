@@ -12,8 +12,8 @@ class TestAPI(unittest.TestCase):
         self.access_token = os.environ.get("ACCESS_TOKEN")
         self.occupied_repo = os.environ.get("OCCUPIED_REPO")
         self.occupied_file = os.environ.get("OCCUPIED_FILE")
-        self.commiter_email = os.environ.get("COMMITER_EMAIL")
-        self.commiter_name = os.environ.get("COMMITER_NAME")
+        self.committer_email = os.environ.get("COMMITTER_EMAIL")
+        self.committer_name = os.environ.get("COMMITTER_NAME")
 
     @classmethod
     def setUpClass(cls):
