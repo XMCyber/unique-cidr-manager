@@ -34,6 +34,6 @@ jobs:
         access_token: ${{ secrets.CIDR_GIT_TOKEN }}
         occupied_repo: ${{ vars.OCCUPIED_REPO }}
         occupied_file: ${{ vars.OCCUPIED_FILE }}
-        commiter_email: ${{ vars.COMMITER_EMAIL }}
-        commiter_name: ${{ vars.COMMITER_NAME }}
+        committer_email: ${{ vars.COMMITTER_EMAIL }}
+        committer_name: ${{ vars.COMMITTER_NAME }}
       run: python -m unittest discover tests
