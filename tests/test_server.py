@@ -39,5 +39,6 @@ class TestAPI(unittest.TestCase):
         response = requests.get(f"http://localhost:8000/get-next-cidr-no-push?subnet_size=24&requiredrange=192&reason={current_reason}")
         self.assertEqual(response.status_code, 200)
 
+
 if __name__ == '__main__':
     unittest.main()
