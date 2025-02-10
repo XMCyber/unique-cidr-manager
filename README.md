@@ -1,8 +1,11 @@
-# unique-cidr-manager
-## _A basic tool build to manage unique CIDR across networks_
+# Unique CIDR Manager
 
+## Status Checks
 ![Workflow Status](https://github.com/xmcyber/unique-cidr-manager/actions/workflows/build-image.yml/badge.svg)
+![Workflow Status](https://github.com/xmcyber/unique-cidr-manager/actions/workflows/python-lint.yml/badge.svg)
+![Workflow Status](https://github.com/xmcyber/unique-cidr-manager/actions/workflows/run-tests.yml/badge.svg)
 
+## _A basic tool build to manage unique CIDR across networks_
 <img src="https://github.com/XMCyber/unique-cidr-manager/blob/master/content/cidr-manager.png" width=40% height=40%>
 
 This tool is built in order to manage the private range ip addresses in the organization network to avoid future potential routing conflicts. 
