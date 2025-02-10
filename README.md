@@ -1,9 +1,9 @@
 # Unique CIDR Manager
 
 ## Status Checks
-![Workflow Status](https://github.com/xmcyber/unique-cidr-manager/actions/workflows/build-image.yml/badge.svg)
-![Workflow Status](https://github.com/xmcyber/unique-cidr-manager/actions/workflows/python-lint.yml/badge.svg)
-![Workflow Status](https://github.com/xmcyber/unique-cidr-manager/actions/workflows/run-tests.yml/badge.svg)
+[![Build Images](https://github.com/xmcyber/unique-cidr-manager/actions/workflows/build-image.yml/badge.svg)](https://github.com/xmcyber/unique-cidr-manager/actions/workflows/build-image.yml)
+[![flake8 Linter](https://github.com/xmcyber/unique-cidr-manager/actions/workflows/python-lint.yml/badge.svg)](https://github.com/xmcyber/unique-cidr-manager/actions/workflows/python-lint.yml)
+[![Run Unittest](https://github.com/xmcyber/unique-cidr-manager/actions/workflows/run-tests.yml/badge.svg)](https://github.com/xmcyber/unique-cidr-manager/actions/workflows/run-tests.yml)
 
 ## _A basic tool build to manage unique CIDR across networks_
 <img src="https://github.com/XMCyber/unique-cidr-manager/blob/master/content/cidr-manager.png" width=40% height=40%>
