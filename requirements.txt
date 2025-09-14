@@ -1,14 +1,17 @@
-# Core FastAPI dependencies
-fastapi==0.104.1
-uvicorn[standard]==0.24.0
-pydantic==2.5.0
-pydantic-settings==2.1.0
+# Core FastAPI dependencies (Python 3.13 compatible)
+fastapi>=0.104.1,<0.120.0
+uvicorn[standard]>=0.24.0,<0.35.0
+pydantic>=2.8.0,<3.0.0
+pydantic-settings>=2.4.0,<3.0.0
 
 # Git operations
-GitPython==3.1.41
+GitPython>=3.1.41,<4.0.0
 
 # Network utilities
-ipaddress==1.0.23
+ipaddress>=1.0.23
 
-# Development and testing (optional)
-requests==2.32.3 # For testing own API
+# HTTP client
+requests>=2.32.3,<3.0.0
+
+# Additional production dependencies
+python-multipart>=0.0.6,<1.0.0  # For form data handling
