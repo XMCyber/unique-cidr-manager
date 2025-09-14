@@ -1,3 +1,14 @@
+# Core FastAPI dependencies
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# Git operations
 GitPython==3.1.41
+
+# Network utilities
 ipaddress==1.0.23
-requests==2.32.3
+
+# Development and testing (optional)
+requests==2.32.3 # For testing own API
