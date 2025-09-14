@@ -12,7 +12,7 @@
       <script src="script.js"></script>
       <div class="container">
          <h1 class="title">
-            <span class="version">version 2.1.3</span>
+            <span class="version">version 2.2.0</span>
             <span>X</span>
             <span>M</span>
             <span>C</span>
@@ -58,8 +58,8 @@
                <button class="button" onclick="get_cidr()" title="Assing permanent Unique CIDR block which will be saved as occupied">Get Unique CIDR</button>
                <button class="button" onclick="get_next_cidr()" title="Shows the next available CIDR block, but not saves it as occupied">Get next available CIDR block</button>
             </div>
-            <div class="textarea">
-               <p>The received CIDR is</p>
+            <div class="textarea" id="cidr-result-container" style="display: none;">
+               <p id="cidr-result-title">The received CIDR is</p>
                <pre id="cidr_messages"></pre>
                <pre id="cidr_output"></pre>
             </div>
@@ -69,8 +69,12 @@
             <div class="button-container">
                <button class="button" onclick="get_occupied_list()" title="Show the current occupied list as saved on Git repository">Get Occupied CIDR List</button>
             </div>
-            <div class="textarea">
-               <p>The Occupied CIDR list is</p>
+            <div class="textarea" id="search-container" style="display: none;">
+               <p class="label">Search CIDR blocks (by reason or CIDR)</p>
+               <input type="text" id="cidr-search" placeholder="Enter search term..." oninput="filterCIDRList()" />
+            </div>
+            <div class="textarea" id="occupied-result-container" style="display: none;">
+               <p id="occupied-result-title">The Occupied CIDR list is</p>
                <pre id="occupied_messages"></pre>
                <pre id="occupied_output"></pre>
             </div>
@@ -84,8 +88,8 @@
             <div class="button-container">
                <button class="button" onclick="delete_cidr_from_list()" title="Permanently deletes the chosen CIDR block from occupied list">Delete CIDR from List</button>
             </div>
-            <div class="textarea">
-               <p>Result:</p>
+            <div class="textarea" id="delete-result-container" style="display: none;">
+               <p id="delete-result-title">Result:</p>
                <pre id="delete_messages"></pre>
             </div>
          </div>
@@ -102,8 +106,8 @@
             <div class="button-container">
                <button class="button" onclick="add_cidr_manually()" title="Manually add CIDR to occupied list">Add CIDR to List</button>
             </div>
-            <div class="textarea">
-               <p>Result:</p>
+            <div class="textarea" id="add-result-container" style="display: none;">
+               <p id="add-result-title">Result:</p>
                <pre id="add_messages"></pre>
             </div>
          </div>
