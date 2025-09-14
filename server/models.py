@@ -36,9 +36,8 @@ class CIDRRequest(BaseModel):
     @validator('subnet_size')
     def validate_subnet_size(cls, v):
         """Validate subnet size is within acceptable range."""
-        valid_sizes = [16, 24, 25, 26, 27, 28]
-        if v not in valid_sizes:
-            raise ValueError(f"Subnet size must be one of: {valid_sizes}")
+        if not (16 <= v <= 28):
+            raise ValueError(f"Subnet size must be between 16 and 28 (inclusive)")
         return v
     
     @validator('required_range')
