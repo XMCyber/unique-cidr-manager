@@ -134,6 +134,7 @@ body {
    margin-bottom: 20px;
    width: auto;
    box-sizing: border-box;
+   transition: opacity 0.3s ease-in-out;
 }
 
 .label {
@@ -161,6 +162,24 @@ textarea {
    color: #000;
    box-sizing: border-box;
  }
+
+input[type="text"] {
+   width: 100%;
+   padding: 10px;
+   border: 1px solid #05E3FC;
+   border-radius: 5px;
+   background: rgba(5, 227, 252, 0.3);
+   color: #000;
+   font-size: 14px;
+   box-sizing: border-box;
+   margin-bottom: 10px;
+}
+
+input[type="text"]:focus {
+   outline: none;
+   border-color: #007BFF;
+   background: rgba(5, 227, 252, 0.5);
+}
 
  .button-container {
    display: flex;
@@ -203,6 +222,28 @@ pre {
    border-radius: 5px;
    color: #F2F2F2;
    white-space: pre-wrap;
+}
+
+/* Validation error styling */
+.validation-error {
+   background-color: #5d2e2e !important;
+   border: 1px solid #ff4444 !important;
+   color: #ffcccc !important;
+}
+
+.validation-error-message {
+   color: #ff6666 !important;
+   font-weight: bold;
+}
+
+/* Validation error title styling */
+.textarea p {
+   margin-bottom: 10px;
+}
+
+.error-title {
+   color: #ff6666 !important;
+   font-weight: bold;
 }
 
 footer {
