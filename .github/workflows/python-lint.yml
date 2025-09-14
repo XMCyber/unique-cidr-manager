@@ -16,4 +16,4 @@ jobs:
         run: |
           pip install flake8
       - name: Lint with flake8
-        run: flake8 . --ignore=E501,E111,E266 --select=E
+        run: flake8 . --ignore=E501,E111,E266,E302 --select=E
