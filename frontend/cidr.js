@@ -8,6 +8,9 @@ let originalOccupiedData = null;
 // Ensure DOM is loaded before running functions
 document.addEventListener('DOMContentLoaded', function() {
     console.log('CIDR Manager frontend loaded successfully');
+    
+    // Auto-load the occupied list on page load
+    get_occupied_list();
 });
 
 async function get_cidr() {
@@ -345,11 +348,18 @@ function filterCIDRList() {
 	}
 	
 	const searchTerm = document.getElementById('cidr-search').value.toLowerCase().trim();
+	const filteredStats = document.getElementById('filtered-stats');
+	const filteredCidrs = document.getElementById('filtered-cidrs');
 	
 	if (searchTerm === '') {
 		// Show all data if search is empty
 		displayOccupiedList(originalOccupiedData);
 		document.getElementById('occupied_messages').innerHTML = "Done!";
+		
+		// Hide filtered stats when showing all results
+		if (filteredStats) {
+			filteredStats.style.display = 'none';
+		}
 		return;
 	}
 	
@@ -373,6 +383,12 @@ function filterCIDRList() {
 	
 	// Update message with filter results
 	document.getElementById('occupied_messages').innerHTML = `Filtered results`;
+	
+	// Show and update filtered stats
+	if (filteredStats && filteredCidrs) {
+		filteredStats.style.display = 'flex';
+		filteredCidrs.textContent = matchCount;
+	}
 }
 
 // Frontend validation function for Get CIDR operations
