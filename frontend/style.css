@@ -139,6 +139,74 @@
    font-weight: 500;
 }
 
+/* CIDR Statistics in the occupied list section */
+.cidr-stats-container {
+   margin: 15px 0;
+   padding: 12px 16px;
+   background: rgba(44, 47, 54, 0.6);
+   border-radius: 8px;
+   border: 1px solid #373A47;
+   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.cidr-stats {
+   display: flex;
+   justify-content: center;
+   gap: 40px;
+   align-items: center;
+}
+
+.stat-item-large {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 8px;
+   text-align: center;
+}
+
+.stat-label-large {
+   font-size: 13px;
+   font-weight: 500;
+   color: #05E3FC;
+   text-transform: uppercase;
+   letter-spacing: 0.5px;
+   margin-bottom: 3px;
+}
+
+.stat-number-large {
+   font-size: 18px;
+   font-weight: 600;
+   color: #FFFFFF;
+   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive design for CIDR stats */
+@media (max-width: 768px) {
+   .cidr-stats {
+      flex-direction: column;
+      gap: 20px;
+   }
+   
+   .stat-label-large {
+      font-size: 12px;
+   }
+   
+   .stat-number-large {
+      font-size: 16px;
+   }
+   
+   /* Mobile responsive for search */
+   #cidr-search {
+      font-size: 16px; /* Prevent zoom on iOS */
+      padding: 12px 16px;
+   }
+   
+   #search-container {
+      padding: 15px;
+      margin: 10px 0;
+   }
+}
+
 /* Responsive design for header */
 @media (max-width: 768px) {
    .header-container {
@@ -269,6 +337,60 @@ input[type="text"]:focus {
    outline: none;
    border-color: #007BFF;
    background: rgba(5, 227, 252, 0.5);
+}
+
+/* Enhanced styling for CIDR search bar */
+#cidr-search {
+   width: 100%;
+   padding: 14px 18px;
+   border: 2px solid #05E3FC;
+   border-radius: 8px;
+   background: rgba(255, 255, 255, 0.95);
+   color: #2C2F36;
+   font-size: 16px;
+   font-weight: 500;
+   box-sizing: border-box;
+   margin-bottom: 15px;
+   box-shadow: 0 3px 8px rgba(5, 227, 252, 0.3);
+   transition: all 0.3s ease;
+}
+
+#cidr-search::placeholder {
+   color: #666;
+   font-weight: 400;
+   opacity: 0.8;
+}
+
+#cidr-search:focus {
+   outline: none;
+   border-color: #1E88E5;
+   background: rgba(255, 255, 255, 1);
+   box-shadow: 0 4px 12px rgba(30, 136, 229, 0.4);
+   transform: translateY(-1px);
+}
+
+#cidr-search:hover {
+   border-color: #1E88E5;
+   box-shadow: 0 4px 10px rgba(5, 227, 252, 0.4);
+}
+
+/* Enhanced search container styling */
+#search-container {
+   background: rgba(30, 136, 229, 0.1);
+   border: 1px solid rgba(5, 227, 252, 0.3);
+   border-radius: 10px;
+   padding: 20px;
+   margin: 15px 0;
+   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#search-container .label {
+   color: #05E3FC;
+   font-weight: 600;
+   font-size: 14px;
+   margin-bottom: 10px;
+   text-transform: uppercase;
+   letter-spacing: 0.5px;
 }
 
  .button-container {
