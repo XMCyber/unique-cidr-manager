@@ -155,6 +155,7 @@ async function delete_cidr_from_list() {
 		
 		containerElement.style.display = 'block';
 		titleElement.innerHTML = "Validation Error:";
+		titleElement.className = "error-title";
 		
 		document.getElementById('delete_messages').innerHTML = cidrValidationError;
 		document.getElementById('delete_messages').className = "validation-error";
@@ -193,6 +194,7 @@ async function add_cidr_manually() {
 		
 		containerElement.style.display = 'block';
 		titleElement.innerHTML = "Validation Error:";
+		titleElement.className = "error-title";
 		
 		document.getElementById('add_messages').innerHTML = reasonValidationError;
 		document.getElementById('add_messages').className = "validation-error";
@@ -207,6 +209,7 @@ async function add_cidr_manually() {
 		
 		containerElement.style.display = 'block';
 		titleElement.innerHTML = "Validation Error:";
+		titleElement.className = "error-title";
 		
 		document.getElementById('add_messages').innerHTML = cidrValidationError;
 		document.getElementById('add_messages').className = "validation-error";
@@ -218,6 +221,7 @@ async function add_cidr_manually() {
 	const titleElement = document.getElementById('add-result-title');
 	containerElement.style.display = 'block';
 	titleElement.innerHTML = "Result:";
+	titleElement.className = "";
 	document.getElementById('add_messages').className = "";
 
 	const url = `/add-cidr-manually?cidr=${cidr}&reason=${reason}`;
