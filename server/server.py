@@ -69,6 +69,28 @@ class Server(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(content)
 
+        if self.path == "/favicon.ico":
+            try:
+                content = open('content/favicon.ico', 'rb').read()
+                self.send_response(200)
+                self.send_header('Content-type', 'image/x-icon')
+                self.end_headers()
+                self.wfile.write(content)
+            except FileNotFoundError:
+                self.send_response(404)
+                self.end_headers()
+
+        if self.path == "/cidr-manager.png":
+            try:
+                content = open('content/cidr-manager.png', 'rb').read()
+                self.send_response(200)
+                self.send_header('Content-type', 'image/png')
+                self.end_headers()
+                self.wfile.write(content)
+            except FileNotFoundError:
+                self.send_response(404)
+                self.end_headers()
+
         if self.path.startswith("/get-subnets"):
             print("get-subnets - Request is being served")
             query = urlparse(self.path).query
