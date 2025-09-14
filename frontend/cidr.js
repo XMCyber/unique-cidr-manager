@@ -23,6 +23,8 @@ async function get_cidr() {
 		titleElement.innerHTML = "Validation Error:";
 		titleElement.className = "error-title";
 		
+		// Hide the messages element to avoid empty line
+		messagesElement.style.display = "none";
 		messagesElement.innerHTML = "";
 		messagesElement.className = "";
 		
@@ -34,10 +36,12 @@ async function get_cidr() {
 	// Show the result container with success context and clear any previous validation error styling
 	const containerElement = document.getElementById('cidr-result-container');
 	const titleElement = document.getElementById('cidr-result-title');
+	const messagesElement = document.getElementById('cidr_messages');
 	containerElement.style.display = 'block';
 	titleElement.innerHTML = "The received CIDR is";
 	titleElement.className = "";
-	document.getElementById('cidr_messages').className = "";
+	messagesElement.style.display = "block";
+	messagesElement.className = "";
 	document.getElementById('cidr_output').className = "";
 
 	const url = `/get-cidr?subnet_size=${subnet_size}&requiredrange=${requiredrange}&reason=${reason}`;
@@ -111,6 +115,8 @@ async function get_next_cidr() {
 		titleElement.innerHTML = "Validation Error:";
 		titleElement.className = "error-title";
 		
+		// Hide the messages element to avoid empty line
+		messagesElement.style.display = "none";
 		messagesElement.innerHTML = "";
 		messagesElement.className = "";
 		
@@ -122,10 +128,12 @@ async function get_next_cidr() {
 	// Show the result container with success context and clear any previous validation error styling
 	const containerElement = document.getElementById('cidr-result-container');
 	const titleElement = document.getElementById('cidr-result-title');
+	const messagesElement = document.getElementById('cidr_messages');
 	containerElement.style.display = 'block';
 	titleElement.innerHTML = "The received CIDR is";
 	titleElement.className = "";
-	document.getElementById('cidr_messages').className = "";
+	messagesElement.style.display = "block";
+	messagesElement.className = "";
 	document.getElementById('cidr_output').className = "";
 
 	const url = `/get-next-cidr-no-push?subnet_size=${subnet_size}&requiredrange=${requiredrange}&reason=${reason}`;
