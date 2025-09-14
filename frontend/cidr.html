@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
    <head>
-      <title>CIDR Manager</title>
+      <title>XMCIDR Manager</title>
       <link rel="icon" type="image/x-icon" href="/favicon.ico">
       <link rel="icon" type="image/png" href="/cidr-manager.png">
       <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" />
@@ -13,23 +13,28 @@
       <div class="background"></div>
       <script src="script.js"></script>
       <div class="container">
-         <h1 class="title">
-            <span class="version">version 2.2.0</span>
-            <span>X</span>
-            <span>M</span>
-            <span>C</span>
-            <span>I</span>
-            <span>D</span>
-            <span>R</span>
-            <span> </span> <!-- Space between words -->
-            <span>M</span>
-            <span>a</span>
-            <span>n</span>
-            <span>a</span>
-            <span>g</span>
-            <span>e</span>
-            <span>r</span>
-          </h1>
+         <div class="header-container">
+            <div class="title-wrapper">
+               <h1 class="title">
+                  <span class="brand-icon"><i class="fas fa-network-wired"></i></span>
+                  <span class="brand-text">
+                     <span class="brand-main">XMCIDR Manager</span>
+                     <span class="brand-tagline">Network Addresses Management Made Simple</span>
+                  </span>
+               </h1>
+               <div class="version-badge">v2.2.1</div>
+            </div>
+            <div class="header-stats" id="header-stats" style="display: none;">
+               <div class="stat-item">
+                  <span class="stat-number" id="total-cidrs">0</span>
+                  <span class="stat-label">Total CIDRs</span>
+               </div>
+               <div class="stat-item">
+                  <span class="stat-number" id="last-updated">Never</span>
+                  <span class="stat-label">Last Updated</span>
+               </div>
+            </div>
+         </div>
          <p class="mandatory">Fields marked with * are mandatory</p>
          <div class="frame">
             <h2 class="dynamic-heading">Get Unique CIDR</h2>

@@ -91,6 +91,9 @@ async function get_occupied_list() {
 	  // Display the formatted data
 	  displayOccupiedList(originalOccupiedData);
 	  
+	  // Update header stats
+	  updateHeaderStats(originalOccupiedData);
+	  
 	  document.getElementById('occupied_messages').innerHTML = "Done!";
 	  
 	  // Show the search container
@@ -470,4 +473,53 @@ async function copyCIDRToClipboard() {
 			}, 2000);
 		}
 	}
+}
+
+// Function to update header statistics
+function updateHeaderStats(data) {
+	const headerStats = document.getElementById('header-stats');
+	const totalCidrs = document.getElementById('total-cidrs');
+	const lastUpdated = document.getElementById('last-updated');
+	
+	if (!data || Object.keys(data).length === 0) {
+		headerStats.style.display = 'none';
+		return;
+	}
+	
+	// Update total count
+	totalCidrs.textContent = Object.keys(data).length;
+	
+	// Find the most recent timestamp
+	let latestTimestamp = 0;
+	for (const key in data) {
+		const match = key.match(/-(\d+)$/);
+		if (match) {
+			const timestamp = parseInt(match[1]);
+			if (timestamp > latestTimestamp) {
+				latestTimestamp = timestamp;
+			}
+		}
+	}
+	
+	// Format the last updated time
+	if (latestTimestamp > 0) {
+		const date = new Date(latestTimestamp * 1000);
+		const now = new Date();
+		const diffMs = now - date;
+		const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+		const diffDays = Math.floor(diffHours / 24);
+		
+		if (diffDays > 0) {
+			lastUpdated.textContent = `${diffDays}d ago`;
+		} else if (diffHours > 0) {
+			lastUpdated.textContent = `${diffHours}h ago`;
+		} else {
+			lastUpdated.textContent = 'Recently';
+		}
+	} else {
+		lastUpdated.textContent = 'Unknown';
+	}
+	
+	// Show the stats
+	headerStats.style.display = 'flex';
 }
