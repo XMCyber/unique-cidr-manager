@@ -2,6 +2,8 @@
 <html>
    <head>
       <title>CIDR Manager</title>
+      <link rel="icon" type="image/x-icon" href="/favicon.ico">
+      <link rel="icon" type="image/png" href="/cidr-manager.png">
       <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" />
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous" />
       <link rel="stylesheet" href="style.css" />
@@ -61,7 +63,12 @@
             <div class="textarea" id="cidr-result-container" style="display: none;">
                <p id="cidr-result-title">The received CIDR is</p>
                <pre id="cidr_messages"></pre>
-               <pre id="cidr_output"></pre>
+               <div class="cidr-output-container">
+                  <pre id="cidr_output"></pre>
+                  <button id="copy-cidr-btn" class="copy-button" onclick="copyCIDRToClipboard()" title="Copy CIDR to clipboard" style="display: none;">
+                     <i class="fas fa-copy"></i>
+                  </button>
+               </div>
             </div>
          </div>
          <div class="frame">

@@ -246,6 +246,173 @@ pre {
    font-weight: bold;
 }
 
+/* CIDR Table Styling */
+.cidr-table-container {
+   width: 100%;
+   margin-top: 10px;
+}
+
+.cidr-table-header {
+   display: flex;
+   background: linear-gradient(135deg, #05E3FC, #007BFF);
+   color: #000;
+   font-weight: bold;
+   font-size: 14px;
+   text-transform: uppercase;
+   letter-spacing: 1px;
+}
+
+.cidr-header-item {
+   flex: 1;
+   padding: 12px 15px;
+   text-align: center;
+   border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.cidr-header-item:last-child {
+   border-right: none;
+}
+
+.cidr-table-body {
+   background-color: #414555;
+}
+
+.cidr-table-row {
+   display: flex;
+   border-bottom: 1px solid #373A47;
+   transition: background-color 0.2s ease;
+}
+
+.cidr-table-row:hover {
+   background-color: #4a4d5e;
+}
+
+.cidr-table-row:last-child {
+   border-bottom: none;
+}
+
+.cidr-cell {
+   flex: 1;
+   padding: 12px 15px;
+   color: #F2F2F2;
+   border-right: 1px solid #373A47;
+   word-break: break-word;
+}
+
+.cidr-cell:last-child {
+   border-right: none;
+}
+
+.reason-cell {
+   font-weight: 500;
+   color: #05E3FC;
+}
+
+.cidr-cell-value {
+   font-family: 'Courier New', monospace;
+   font-weight: bold;
+   color: #90EE90;
+   text-align: center;
+}
+
+.date-cell {
+   text-align: center;
+   color: #B0B0B0;
+   font-size: 12px;
+}
+
+.cidr-table-footer {
+   background-color: #373A47;
+   padding: 10px 15px;
+   border-top: 1px solid #2a2d35;
+}
+
+.cidr-count-info {
+   text-align: center;
+   color: #B0B0B0;
+   font-size: 12px;
+   font-weight: 500;
+}
+
+.cidr-count-info i {
+   margin-right: 5px;
+   color: #05E3FC;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+   .cidr-header-item, .cidr-cell {
+      padding: 8px 10px;
+      font-size: 12px;
+   }
+   
+   .cidr-header-item {
+      font-size: 11px;
+   }
+   
+   .date-cell {
+      font-size: 10px;
+   }
+}
+
+/* Empty state styling */
+.cidr-table-container .empty-state {
+   text-align: center;
+   padding: 40px 20px;
+   color: #B0B0B0;
+   font-style: italic;
+}
+
+/* CIDR Output Container with Copy Button */
+.cidr-output-container {
+   position: relative;
+   display: inline-block;
+   width: 100%;
+}
+
+.copy-button {
+   position: absolute;
+   top: 8px;
+   right: 8px;
+   background-color: #05E3FC;
+   color: #000;
+   border: none;
+   border-radius: 4px;
+   padding: 6px 8px;
+   cursor: pointer;
+   font-size: 12px;
+   transition: all 0.2s ease;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.copy-button:hover {
+   background-color: #007BFF;
+   color: #fff;
+   transform: translateY(-1px);
+   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.copy-button:active {
+   transform: translateY(0);
+   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.copy-button i {
+   margin: 0;
+}
+
+/* Success state for copy button */
+.copy-button.copied {
+   background-color: #28a745;
+   color: #fff;
+}
+
+.copy-button.copied::after {
+   content: " Copied!";
+   font-size: 10px;
+   margin-left: 4px;
+}
+
 footer {
    text-align: center;
    padding: 20px;
