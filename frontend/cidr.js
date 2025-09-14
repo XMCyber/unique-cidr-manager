@@ -30,6 +30,9 @@ async function get_cidr() {
 		
 		outputElement.innerHTML = validationError;
 		outputElement.className = "validation-error";
+		
+		// Hide copy button during validation errors
+		document.getElementById('copy-cidr-btn').style.display = 'none';
 		return;
 	}
 	
@@ -49,15 +52,23 @@ async function get_cidr() {
 	try {
 		document.getElementById('cidr_messages').innerHTML = "Retrieving unique cidr..";
 		document.getElementById('cidr_output').innerHTML = wait_message;
+		document.getElementById('copy-cidr-btn').style.display = 'none';
+		
 		const response = await fetch(url);
 		const cidrRes = await response.text();
 		document.getElementById('cidr_output').innerHTML = (cidrRes);
 		document.getElementById('cidr_messages').innerHTML = "Done!";
+		
+		// Show copy button if we have a valid CIDR response
+		if (cidrRes && !cidrRes.includes('error') && !cidrRes.includes('Error')) {
+			document.getElementById('copy-cidr-btn').style.display = 'block';
+		}
 
 	}
 	catch (e) {
 		document.getElementById('cidr_messages').innerHTML = `Server error: ${e.message}`;
 		document.getElementById('cidr_output').innerHTML = error_message;
+		document.getElementById('copy-cidr-btn').style.display = 'none';
 	}
 }
 
@@ -80,8 +91,7 @@ async function get_occupied_list() {
 	  // Display the formatted data
 	  displayOccupiedList(originalOccupiedData);
 	  
-	  const num_elements = Object.keys(originalOccupiedData).length;
-	  document.getElementById('occupied_messages').innerHTML = `Done! Raw count is ${num_elements}`;
+	  document.getElementById('occupied_messages').innerHTML = "Done!";
 	  
 	  // Show the search container
 	  document.getElementById('search-container').style.display = 'block';
@@ -122,6 +132,9 @@ async function get_next_cidr() {
 		
 		outputElement.innerHTML = validationError;
 		outputElement.className = "validation-error";
+		
+		// Hide copy button during validation errors
+		document.getElementById('copy-cidr-btn').style.display = 'none';
 		return;
 	}
 	
@@ -140,14 +153,22 @@ async function get_next_cidr() {
 	try {
 		document.getElementById('cidr_messages').innerHTML = git_message;
 		document.getElementById('cidr_output').innerHTML = wait_message;
+		document.getElementById('copy-cidr-btn').style.display = 'none';
+		
 		const response = await fetch(url);
 		const occupiedlist = await response.text();
 		document.getElementById('cidr_output').innerHTML = occupiedlist;
 		document.getElementById('cidr_messages').innerHTML = "Done!";
+		
+		// Show copy button if we have a valid CIDR response
+		if (occupiedlist && !occupiedlist.includes('error') && !occupiedlist.includes('Error')) {
+			document.getElementById('copy-cidr-btn').style.display = 'block';
+		}
 	}
 	catch (e) {
 		document.getElementById('cidr_messages').innerHTML = `Server error: ${e.message}`;
 		document.getElementById('cidr_output').innerHTML = error_message;
+		document.getElementById('copy-cidr-btn').style.display = 'none';
 
 	}
 }
@@ -250,20 +271,46 @@ async function add_cidr_manually() {
 
 // Function to display the occupied CIDR list in a formatted way
 function displayOccupiedList(data) {
-	let formattedOutput = '';
+	const outputElement = document.getElementById('occupied_output');
 	
 	if (Object.keys(data).length === 0) {
-		formattedOutput = 'No occupied CIDR blocks found.';
-	} else {
-		// Create a formatted display with reason and CIDR
-		for (const [key, cidr] of Object.entries(data)) {
-			// Extract reason by removing the timestamp suffix
-			const reason = key.replace(/-\d+$/, '');
-			formattedOutput += `Reason: ${reason}\nCIDR: ${cidr}\n\n`;
-		}
+		outputElement.innerHTML = `<div class="cidr-table-container"><div class="empty-state"><i class="fas fa-info-circle" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>No occupied CIDR blocks found.</div></div>`;
+		return;
 	}
-	
-	document.getElementById('occupied_output').innerHTML = formattedOutput;
+
+	// Create a structured HTML table for better presentation
+	const totalCount = Object.keys(data).length;
+	let tableHTML = `<div class="cidr-table-container"><div class="cidr-table-header"><div class="cidr-header-item">Reason</div><div class="cidr-header-item">CIDR Block</div><div class="cidr-header-item">Created</div></div><div class="cidr-table-body">`;
+
+	// Sort entries by timestamp (newest first)
+	const sortedEntries = Object.entries(data).sort((a, b) => {
+		const timestampA = parseInt(a[0].match(/-(\d+)$/)?.[1] || '0');
+		const timestampB = parseInt(b[0].match(/-(\d+)$/)?.[1] || '0');
+		return timestampB - timestampA;
+	});
+
+	for (const [key, cidr] of sortedEntries) {
+		// Extract timestamp for date display, but keep original key as reason
+		const match = key.match(/^(.+)-(\d+)$/);
+		const timestamp = match ? parseInt(match[2]) : 0;
+		
+		let formattedDate = 'Unknown';
+		if (timestamp) {
+			const dateObj = new Date(timestamp * 1000);
+			const hours = dateObj.getHours().toString().padStart(2, '0');
+			const minutes = dateObj.getMinutes().toString().padStart(2, '0');
+			const day = dateObj.getDate().toString().padStart(2, '0');
+			const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
+			const year = dateObj.getFullYear().toString().slice(-2);
+			formattedDate = `${hours}:${minutes} ${day}/${month}/${year}`;
+		}
+		
+		tableHTML += `<div class="cidr-table-row"><div class="cidr-cell reason-cell">${key}</div><div class="cidr-cell cidr-cell-value">${cidr}</div><div class="cidr-cell date-cell">${formattedDate}</div></div>`;
+	}
+
+	tableHTML += `</div><div class="cidr-table-footer"><div class="cidr-count-info"><i class="fas fa-list"></i> Total: ${totalCount} CIDR block${totalCount !== 1 ? 's' : ''}</div></div></div>`;
+
+	outputElement.innerHTML = tableHTML;
 }
 
 // Function to filter the CIDR list based on search input
@@ -277,8 +324,7 @@ function filterCIDRList() {
 	if (searchTerm === '') {
 		// Show all data if search is empty
 		displayOccupiedList(originalOccupiedData);
-		const totalCount = Object.keys(originalOccupiedData).length;
-		document.getElementById('occupied_messages').innerHTML = `Done! Raw count is ${totalCount}`;
+		document.getElementById('occupied_messages').innerHTML = "Done!";
 		return;
 	}
 	
@@ -301,8 +347,7 @@ function filterCIDRList() {
 	displayOccupiedList(filteredData);
 	
 	// Update message with filter results
-	const totalCount = Object.keys(originalOccupiedData).length;
-	document.getElementById('occupied_messages').innerHTML = `Showing ${matchCount} of ${totalCount} CIDR blocks`;
+	document.getElementById('occupied_messages').innerHTML = `Filtered results`;
 }
 
 // Frontend validation function for Get CIDR operations
@@ -363,4 +408,66 @@ function validateCIDRInput(cidr) {
 	}
 	
 	return null; // No validation errors
+}
+
+// Function to copy CIDR to clipboard
+async function copyCIDRToClipboard() {
+	const cidrOutput = document.getElementById('cidr_output');
+	const copyButton = document.getElementById('copy-cidr-btn');
+	
+	if (!cidrOutput || !cidrOutput.textContent.trim()) {
+		return;
+	}
+	
+	try {
+		// Get the CIDR text and clean it up
+		const cidrText = cidrOutput.textContent.trim();
+		
+		// Copy to clipboard
+		await navigator.clipboard.writeText(cidrText);
+		
+		// Show success feedback
+		copyButton.classList.add('copied');
+		copyButton.innerHTML = '<i class="fas fa-check"></i>';
+		
+		// Reset button after 2 seconds
+		setTimeout(() => {
+			copyButton.classList.remove('copied');
+			copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+		}, 2000);
+		
+	} catch (err) {
+		// Fallback for older browsers
+		try {
+			const textArea = document.createElement('textarea');
+			textArea.value = cidrOutput.textContent.trim();
+			document.body.appendChild(textArea);
+			textArea.select();
+			document.execCommand('copy');
+			document.body.removeChild(textArea);
+			
+			// Show success feedback
+			copyButton.classList.add('copied');
+			copyButton.innerHTML = '<i class="fas fa-check"></i>';
+			
+			// Reset button after 2 seconds
+			setTimeout(() => {
+				copyButton.classList.remove('copied');
+				copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+			}, 2000);
+			
+		} catch (fallbackErr) {
+			console.error('Failed to copy CIDR to clipboard:', fallbackErr);
+			
+			// Show error feedback
+			copyButton.style.backgroundColor = '#dc3545';
+			copyButton.innerHTML = '<i class="fas fa-times"></i>';
+			
+			// Reset button after 2 seconds
+			setTimeout(() => {
+				copyButton.style.backgroundColor = '';
+				copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+			}, 2000);
+		}
+	}
 }
