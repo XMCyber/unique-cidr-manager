@@ -22,17 +22,7 @@
                      <span class="brand-tagline">Network Addresses Management Made Simple</span>
                   </span>
                </h1>
-               <div class="version-badge">v2.2.1</div>
-            </div>
-            <div class="header-stats" id="header-stats" style="display: none;">
-               <div class="stat-item">
-                  <span class="stat-number" id="total-cidrs">0</span>
-                  <span class="stat-label">Total CIDRs</span>
-               </div>
-               <div class="stat-item">
-                  <span class="stat-number" id="last-updated">Never</span>
-                  <span class="stat-label">Last Updated</span>
-               </div>
+               <div class="version-badge">v3.0.1</div>
             </div>
          </div>
          <p class="mandatory">Fields marked with * are mandatory</p>
@@ -84,6 +74,18 @@
             <div class="textarea" id="search-container" style="display: none;">
                <p class="label">Search CIDR blocks (by reason or CIDR)</p>
                <input type="text" id="cidr-search" placeholder="Enter search term..." oninput="filterCIDRList()" />
+            </div>
+            <div class="cidr-stats-container" id="cidr-stats-container" style="display: none;">
+               <div class="cidr-stats">
+                  <div class="stat-item-large">
+                     <div class="stat-label-large">Total CIDRs</div>
+                     <div class="stat-number-large" id="total-cidrs">0</div>
+                  </div>
+                  <div class="stat-item-large">
+                     <div class="stat-label-large">Last Updated</div>
+                     <div class="stat-number-large" id="last-updated">Never</div>
+                  </div>
+               </div>
             </div>
             <div class="textarea" id="occupied-result-container" style="display: none;">
                <p id="occupied-result-title">The Occupied CIDR list is</p>

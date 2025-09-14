@@ -5,6 +5,11 @@ const error_message = 'Failed, please try again';
 // Global variable to store the original occupied list data
 let originalOccupiedData = null;
 
+// Ensure DOM is loaded before running functions
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('CIDR Manager frontend loaded successfully');
+});
+
 async function get_cidr() {
 	const subnet_size = document.getElementById('subnet')?.value || '';
 	const requiredrange = document.getElementById('range')?.value || '';
@@ -77,11 +82,17 @@ async function get_occupied_list() {
 	
 	// Show the result container
 	const containerElement = document.getElementById('occupied-result-container');
-	containerElement.style.display = 'block';
+	if (containerElement) {
+		containerElement.style.display = 'block';
+	}
 	
 	try {
-	  document.getElementById('occupied_messages').innerHTML = git_message;
-	  document.getElementById('occupied_output').innerHTML = wait_message;
+	  const occupiedMessages = document.getElementById('occupied_messages');
+	  const occupiedOutput = document.getElementById('occupied_output');
+	  
+	  if (occupiedMessages) occupiedMessages.innerHTML = git_message;
+	  if (occupiedOutput) occupiedOutput.innerHTML = wait_message;
+	  
 	  const response = await fetch(url);
 	  const occupiedlist = await response.text();
 	  
@@ -91,22 +102,33 @@ async function get_occupied_list() {
 	  // Display the formatted data
 	  displayOccupiedList(originalOccupiedData);
 	  
-	  // Update header stats
-	  updateHeaderStats(originalOccupiedData);
+	  // Update CIDR stats
+	  updateCIDRStats(originalOccupiedData);
 	  
-	  document.getElementById('occupied_messages').innerHTML = "Done!";
+	  if (occupiedMessages) occupiedMessages.innerHTML = "Done!";
 	  
 	  // Show the search container
-	  document.getElementById('search-container').style.display = 'block';
+	  const searchContainer = document.getElementById('search-container');
+	  if (searchContainer) {
+	    searchContainer.style.display = 'block';
+	  }
 	  
 	  // Clear any previous search
-	  document.getElementById('cidr-search').value = '';
+	  const cidrSearch = document.getElementById('cidr-search');
+	  if (cidrSearch) {
+	    cidrSearch.value = '';
+	  }
 	  
 	} catch (e) {
-	  document.getElementById('occupied_messages').innerHTML = `Server error: ${e.message}`;
-	  document.getElementById('occupied_output').innerHTML = error_message;
+	  console.error('Error in get_occupied_list:', e);
+	  const occupiedMessages = document.getElementById('occupied_messages');
+	  const occupiedOutput = document.getElementById('occupied_output');
+	  const searchContainer = document.getElementById('search-container');
+	  
+	  if (occupiedMessages) occupiedMessages.innerHTML = `Server error: ${e.message}`;
+	  if (occupiedOutput) occupiedOutput.innerHTML = error_message;
 	  // Hide search container on error
-	  document.getElementById('search-container').style.display = 'none';
+	  if (searchContainer) searchContainer.style.display = 'none';
 	}
 }
 
@@ -475,14 +497,20 @@ async function copyCIDRToClipboard() {
 	}
 }
 
-// Function to update header statistics
-function updateHeaderStats(data) {
-	const headerStats = document.getElementById('header-stats');
+// Function to update CIDR statistics in the occupied list section
+function updateCIDRStats(data) {
+	const statsContainer = document.getElementById('cidr-stats-container');
 	const totalCidrs = document.getElementById('total-cidrs');
 	const lastUpdated = document.getElementById('last-updated');
 	
+	// Check if elements exist
+	if (!statsContainer || !totalCidrs || !lastUpdated) {
+		console.error('CIDR stats elements not found');
+		return;
+	}
+	
 	if (!data || Object.keys(data).length === 0) {
-		headerStats.style.display = 'none';
+		statsContainer.style.display = 'none';
 		return;
 	}
 	
@@ -520,6 +548,6 @@ function updateHeaderStats(data) {
 		lastUpdated.textContent = 'Unknown';
 	}
 	
-	// Show the stats
-	headerStats.style.display = 'flex';
+	// Show the stats container
+	statsContainer.style.display = 'block';
 }
