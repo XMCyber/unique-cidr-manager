@@ -230,7 +230,12 @@ async function delete_cidr_from_list() {
 	const url = `/delete-cidr-from-list?cidr_deletion=${cidr_deletion}`;
 	try {
 		document.getElementById('delete_messages').innerHTML = git_message;
-		const response = await fetch(url);
+		const response = await fetch(url, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+			}
+		});
 		const occupiedlist = await response.text();
 		document.getElementById('delete_messages').innerHTML = occupiedlist;
 	}

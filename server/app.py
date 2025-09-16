@@ -36,7 +36,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["GET"],  # Restricted to GET method
+    allow_methods=["GET", "DELETE"],  # Allow GET and DELETE methods
     allow_headers=["*"],
 )
 
@@ -184,12 +184,30 @@ async def delete_cidr_from_list(
     cidr_deletion: str = Query(..., description="CIDR block to delete (e.g., 10.0.1.0/24)")
 ):
     """
-    Delete a CIDR block from the occupied list.
+    Delete a CIDR block from the occupied list (GET method for backward compatibility).
     
     Original endpoint - maintains exact same behavior as the legacy system.
     """
     try:
         logger.info(f"Deleting CIDR: {cidr_deletion}")
+        result = cidr_service.delete_cidr_from_list(cidr_deletion)
+        return result
+    except Exception as e:
+        logger.error(f"Error deleting CIDR: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.delete("/delete-cidr-from-list", response_class=PlainTextResponse)
+async def delete_cidr_from_list_delete(
+    cidr_deletion: str = Query(..., description="CIDR block to delete (e.g., 10.0.1.0/24)")
+):
+    """
+    Delete a CIDR block from the occupied list (DELETE method - modern approach).
+    
+    This endpoint provides the same functionality as the GET version but uses 
+    the proper HTTP DELETE method for better REST API practices.
+    """
+    try:
+        logger.info(f"Deleting CIDR via DELETE method: {cidr_deletion}")
         result = cidr_service.delete_cidr_from_list(cidr_deletion)
         return result
     except Exception as e:
