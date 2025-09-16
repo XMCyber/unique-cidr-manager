@@ -79,8 +79,10 @@ class TestAPI(unittest.TestCase):
         occupied_response = requests.get("http://localhost:8000/get-occupied-list")
         self.assertEqual(occupied_response.status_code, 200)
         
+        # The response is a JSON string, so we need to parse it
         occupied_data = occupied_response.json()
-        cidr_found = any(item.get('cidr') == generated_cidr for item in occupied_data)
+        # occupied_data is a dictionary where values are CIDR blocks
+        cidr_found = generated_cidr in occupied_data.values()
         self.assertTrue(cidr_found, f"Generated CIDR {generated_cidr} should be in occupied list")
         print(f"✓ CIDR found in occupied list")
         
@@ -100,7 +102,8 @@ class TestAPI(unittest.TestCase):
         self.assertEqual(final_occupied_response.status_code, 200)
         
         final_occupied_data = final_occupied_response.json()
-        cidr_still_exists = any(item.get('cidr') == generated_cidr for item in final_occupied_data)
+        # Check if the CIDR is still in the values of the dictionary
+        cidr_still_exists = generated_cidr in final_occupied_data.values()
         self.assertFalse(cidr_still_exists, f"CIDR {generated_cidr} should be removed from occupied list")
         print(f"✓ CIDR successfully removed from occupied list")
         
