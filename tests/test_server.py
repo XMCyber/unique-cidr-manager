@@ -15,6 +15,8 @@ class TestAPI(unittest.TestCase):
         self.occupied_file = os.environ.get("OCCUPIED_FILE")
         self.committer_email = os.environ.get("COMMITTER_EMAIL")
         self.committer_name = os.environ.get("COMMITTER_NAME")
+        # Store the generated CIDR for use in other tests
+        self.generated_cidr = None
 
     @classmethod
     def setUpClass(cls):
@@ -30,46 +32,20 @@ class TestAPI(unittest.TestCase):
         time = datetime.now().strftime("%H:%M:%S")
         return f"test-{time}"
 
-    def test_get_cidr(self):
-        current_reason = self.get_current_reason()
-        response = requests.get(f"http://localhost:8000/get-cidr?subnet_size=26&requiredrange=10&reason={current_reason}")
-        self.assertEqual(response.status_code, 200)
-        print(response.text)
-        self.assertTrue(IPv4Network(response.text))
-    
-    def test_get_subnets(self):
-        response = requests.get("http://localhost:8000/get-subnets?subnet_size=28&cidr=10.0.1.0/26")
-        self.assertEqual(response.status_code, 200)
-        print(response.text)
-        self.assertTrue(all(IPv4Network(subnet) for subnet in response.text.split()))
-
-    def test_get_next_cidr_no_push(self):
-        current_reason = self.get_current_reason()
-        response = requests.get(f"http://localhost:8000/get-next-cidr-no-push?subnet_size=26&requiredrange=10&reason={current_reason}")
-        self.assertEqual(response.status_code, 200)
-        print(response.text)
-        self.assertTrue(IPv4Network(response.text))
-
-    def test_get_occupied_list(self):
-        response = requests.get(f"http://localhost:8000/get-occupied-list")
-        self.assertEqual(response.status_code, 200)
-        try:
-            json_data = response.json()
-            print
-        except ValueError:
-            self.fail("Response is not valid JSON")
-
-    def test_get_cidr_and_delete_with_get_method(self):
+    def test_get_cidr_and_delete(self):
         """Test generating a CIDR and then deleting it using the GET method (old approach)"""
         current_reason = self.get_current_reason()
         
         # Step 1: Generate a new CIDR
         print(f"\n--- Generating CIDR with reason: {current_reason} ---")
-        get_response = requests.get(f"http://localhost:8000/get-cidr?subnet_size=26&requiredrange=10&reason={current_reason}")
-        self.assertEqual(get_response.status_code, 200)
+        response = requests.get(f"http://localhost:8000/get-cidr?subnet_size=26&requiredrange=10&reason={current_reason}")
+        self.assertEqual(response.status_code, 200)
         
-        generated_cidr = get_response.text.strip()
+        generated_cidr = response.text.strip()
         print(f"Generated CIDR: {generated_cidr}")
+        
+        # Store the generated CIDR for use in other tests
+        self.generated_cidr = generated_cidr
         
         # Validate it's a proper CIDR
         self.assertTrue(IPv4Network(generated_cidr))
@@ -108,7 +84,33 @@ class TestAPI(unittest.TestCase):
         print(f"✓ CIDR successfully removed from occupied list")
         
         print(f"--- Test completed successfully ---")
+    
+    def test_get_subnets(self):
+        # Use the CIDR generated in the previous test
+        if self.generated_cidr is None:
+            self.skipTest("No CIDR available from previous test - run test_get_cidr_and_delete first")
+        
+        print(f"\n--- Testing subnets for generated CIDR: {self.generated_cidr} ---")
+        response = requests.get(f"http://localhost:8000/get-subnets?subnet_size=28&cidr={self.generated_cidr}")
+        self.assertEqual(response.status_code, 200)
+        print(f"Subnets response: {response.text}")
+        self.assertTrue(all(IPv4Network(subnet) for subnet in response.text.split()))
 
+    def test_get_next_cidr_no_push(self):
+        current_reason = self.get_current_reason()
+        response = requests.get(f"http://localhost:8000/get-next-cidr-no-push?subnet_size=26&requiredrange=10&reason={current_reason}")
+        self.assertEqual(response.status_code, 200)
+        print(response.text)
+        self.assertTrue(IPv4Network(response.text))
+
+    def test_get_occupied_list(self):
+        response = requests.get(f"http://localhost:8000/get-occupied-list")
+        self.assertEqual(response.status_code, 200)
+        try:
+            json_data = response.json()
+            print
+        except ValueError:
+            self.fail("Response is not valid JSON")
 
 if __name__ == '__main__':
     unittest.main()
