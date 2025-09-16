@@ -59,6 +59,53 @@ class TestAPI(unittest.TestCase):
         except ValueError:
             self.fail("Response is not valid JSON")
 
+    def test_get_cidr_and_delete_with_get_method(self):
+        """Test generating a CIDR and then deleting it using the GET method (old approach)"""
+        current_reason = self.get_current_reason()
+        
+        # Step 1: Generate a new CIDR
+        print(f"\n--- Generating CIDR with reason: {current_reason} ---")
+        get_response = requests.get(f"http://localhost:8000/get-cidr?subnet_size=26&requiredrange=10&reason={current_reason}")
+        self.assertEqual(get_response.status_code, 200)
+        
+        generated_cidr = get_response.text.strip()
+        print(f"Generated CIDR: {generated_cidr}")
+        
+        # Validate it's a proper CIDR
+        self.assertTrue(IPv4Network(generated_cidr))
+        
+        # Step 2: Verify the CIDR is in the occupied list
+        print(f"--- Verifying CIDR {generated_cidr} is in occupied list ---")
+        occupied_response = requests.get("http://localhost:8000/get-occupied-list")
+        self.assertEqual(occupied_response.status_code, 200)
+        
+        occupied_data = occupied_response.json()
+        cidr_found = any(item.get('cidr') == generated_cidr for item in occupied_data)
+        self.assertTrue(cidr_found, f"Generated CIDR {generated_cidr} should be in occupied list")
+        print(f"✓ CIDR found in occupied list")
+        
+        # Step 3: Delete the CIDR using GET method (old approach)
+        print(f"--- Deleting CIDR {generated_cidr} using GET method ---")
+        delete_response = requests.get(f"http://localhost:8000/delete-cidr-from-list?cidr_deletion={generated_cidr}")
+        self.assertEqual(delete_response.status_code, 200)
+        
+        delete_result = delete_response.text.strip()
+        print(f"Delete response: {delete_result}")
+        
+        # Step 4: Verify the CIDR is no longer in the occupied list
+        print(f"--- Verifying CIDR {generated_cidr} is removed from occupied list ---")
+        sleep(1)  # Give it a moment for the deletion to propagate
+        
+        final_occupied_response = requests.get("http://localhost:8000/get-occupied-list")
+        self.assertEqual(final_occupied_response.status_code, 200)
+        
+        final_occupied_data = final_occupied_response.json()
+        cidr_still_exists = any(item.get('cidr') == generated_cidr for item in final_occupied_data)
+        self.assertFalse(cidr_still_exists, f"CIDR {generated_cidr} should be removed from occupied list")
+        print(f"✓ CIDR successfully removed from occupied list")
+        
+        print(f"--- Test completed successfully ---")
+
 
 if __name__ == '__main__':
     unittest.main()
