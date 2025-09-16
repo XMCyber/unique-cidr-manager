@@ -19,7 +19,7 @@ try:
     DEST = 'infra'
     OCCUPIED_FILE_PATH = f"{DEST}/{occupied_file}"
 
-    print("Done loading params")
+    print("Doneand  loading params")
 except KeyError: 
     print("Initial setup failed")
     print("Make sure all env vars are provided: access_token, occupied_repo")
