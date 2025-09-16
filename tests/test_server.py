@@ -112,5 +112,6 @@ class TestAPI(unittest.TestCase):
         except ValueError:
             self.fail("Response is not valid JSON")
 
+
 if __name__ == '__main__':
     unittest.main()
