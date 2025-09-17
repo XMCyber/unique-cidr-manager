@@ -162,7 +162,7 @@ class TestAPI(unittest.TestCase):
         # TIGHT VALIDATION: Exact format "CIDR {cidr} deleted successfully"
         expected_pattern = rf'^CIDR {re.escape(test_cidr)} deleted successfully.*$'
         self.assertTrue(re.match(expected_pattern, output),
-            f"Delete output doesn't match expected format. Got: {output}")
+                        f"Delete output doesn't match expected format. Got: {output}")
 
         print(f"   ✅ PASSED: Correct delete message format")
 
