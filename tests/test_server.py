@@ -88,7 +88,7 @@ class TestAPI(unittest.TestCase):
         for i, subnet in enumerate(subnets):
             self.assertTrue(re.match(cidr_pattern, subnet), f"Invalid subnet format: {subnet}")
             subnet_network = IPv4Network(subnet)
-            self.assertEqual(subnet_network.prefixlen, 28, f"Subnet {i+1} not /28: {subnet}")
+            self.assertEqual(subnet_network.prefixlen, 28, f"Subnet {i + 1} not /28: {subnet}")
             self.assertTrue(subnet_network.subnet_of(IPv4Network(test_cidr)), f"Subnet {subnet} not subset of {test_cidr}")
 
         # Validate expected exact output
@@ -161,7 +161,7 @@ class TestAPI(unittest.TestCase):
 
         # TIGHT VALIDATION: Exact format "CIDR {cidr} deleted successfully"
         expected_pattern = rf'^CIDR {re.escape(test_cidr)} deleted successfully.*$'
-        self.assertTrue(re.match(expected_pattern, output), 
+        self.assertTrue(re.match(expected_pattern, output),
             f"Delete output doesn't match expected format. Got: {output}")
 
         print(f"   ✅ PASSED: Correct delete message format")
