@@ -244,8 +244,26 @@ async def get_subnets(
     """
     try:
         logger.info(f"Getting subnets from CIDR: {cidr} with size: {subnet_size}")
-        result = subnet_service.get_subnets_from_cidr(int(subnet_size), cidr)
-        return " ".join(result)
+        
+        # Validate inputs
+        if not subnet_size or not cidr:
+            raise ValueError("Both subnet_size and cidr parameters are required")
+        
+        # Convert subnet_size to int
+        try:
+            subnet_size_int = int(subnet_size)
+        except ValueError:
+            raise ValueError(f"Invalid subnet_size: {subnet_size}. Must be an integer.")
+        
+        # Call the service
+        result = subnet_service.get_subnets_from_cidr(subnet_size_int, cidr)
+        
+        # Join results with spaces
+        response_text = " ".join(result)
+        logger.info(f"Returning {len(result)} subnets: {response_text}")
+        
+        return response_text
+        
     except ValueError as e:
         logger.error(f"Validation error: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
