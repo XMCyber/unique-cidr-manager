@@ -69,33 +69,37 @@ class TestAPI(unittest.TestCase):
     def test_2_get_subnets_output_validation(self):
         """TEST 2: get_subnets_from_cidr - output must be 4 valid CIDRs with whitespaces"""
         print(f"\n🧪 TEST 2: get-subnets API (output = 4 valid CIDRs with whitespaces)")
-
-        # Use a known CIDR for consistent testing
-        test_cidr = "10.0.93.128/26"
-
+        
+        # Use the real allocated CIDR from Test 1
+        test_cidr = self._get_test_cidr()
+        print(f"   Using real allocated CIDR: {test_cidr}")
+        
         response = requests.get(f"http://localhost:8000/get-subnets?subnet_size=28&cidr={test_cidr}")
         self.assertEqual(response.status_code, 200)
-
+        
         output = response.text.strip()
         print(f"   Output: '{output}'")
-
+        
         # TIGHT VALIDATION: 4 CIDRs with whitespaces
         cidr_pattern = r'^(\d{1,3}\.){3}\d{1,3}/\d{1,2}$'
         subnets = output.split()
         self.assertEqual(len(subnets), 4, f"Expected 4 subnets, got {len(subnets)}")
         self.assertIn(' ', output, "Must contain whitespace separators")
-
+        
+        # Parse the original CIDR to calculate expected subnets
+        original_network = IPv4Network(test_cidr)
+        expected_subnets = [str(subnet) for subnet in original_network.subnets(new_prefix=28)]
+        
         for i, subnet in enumerate(subnets):
             self.assertTrue(re.match(cidr_pattern, subnet), f"Invalid subnet format: {subnet}")
             subnet_network = IPv4Network(subnet)
             self.assertEqual(subnet_network.prefixlen, 28, f"Subnet {i + 1} not /28: {subnet}")
-            self.assertTrue(subnet_network.subnet_of(IPv4Network(test_cidr)), f"Subnet {subnet} not subset of {test_cidr}")
-
-        # Validate expected exact output
-        expected_subnets = ["10.0.93.128/28", "10.0.93.144/28", "10.0.93.160/28", "10.0.93.176/28"]
+            self.assertTrue(subnet_network.subnet_of(original_network), f"Subnet {subnet} not subset of {test_cidr}")
+        
+        # Validate against dynamically calculated expected subnets
         self.assertEqual(subnets, expected_subnets, f"Expected {expected_subnets}, got {subnets}")
-
-        print(f"   ✅ PASSED: 4 valid CIDRs with whitespaces")
+        
+        print(f"   ✅ PASSED: 4 valid CIDRs with whitespaces from real allocation")
 
     def test_3_get_next_available_output_validation(self):
         """TEST 3: get_next_available - output must be valid CIDR"""
