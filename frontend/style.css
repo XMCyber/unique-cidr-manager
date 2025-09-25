@@ -259,14 +259,247 @@ body {
    height: 100%;
    z-index: -1;
    pointer-events: none;
-   background: #2a2b32; /* Background color of the page */
+   background: 
+      radial-gradient(ellipse at center, #0f0f23 0%, #000000 100%),
+      radial-gradient(circle at 20% 30%, rgba(75, 0, 130, 0.3) 0%, transparent 30%),
+      radial-gradient(circle at 80% 70%, rgba(25, 25, 112, 0.2) 0%, transparent 40%);
+   overflow: hidden;
 }
 
+/* Starfield */
+.star {
+   position: absolute;
+   background: white;
+   border-radius: 50%;
+   animation: starTwinkle 2s ease-in-out infinite alternate;
+}
+
+.star-small {
+   width: 1px;
+   height: 1px;
+   box-shadow: 0 0 2px white;
+}
+
+.star-medium {
+   width: 2px;
+   height: 2px;
+   box-shadow: 0 0 4px white, 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.star-large {
+   width: 3px;
+   height: 3px;
+   box-shadow: 
+      0 0 6px white, 
+      0 0 12px rgba(255, 255, 255, 0.7),
+      0 0 18px rgba(173, 216, 230, 0.5);
+}
+
+@keyframes starTwinkle {
+   0% { 
+      opacity: 0.3;
+      transform: scale(1);
+   }
+   100% { 
+      opacity: 1;
+      transform: scale(1.2);
+   }
+}
+
+/* Planets */
+.planet {
+   position: absolute;
+   font-size: 40px;
+   border-radius: 50%;
+   transition: all 0.3s ease;
+   cursor: pointer;
+   filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+   animation: planetGlow 3s ease-in-out infinite alternate;
+}
+
+.planet:hover {
+   transform: scale(1.3) !important;
+   filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.8));
+}
+
+.planet-earth {
+   color: #4169E1;
+   text-shadow: 0 0 20px #00FF00, 0 0 40px #0000FF;
+}
+
+.planet-mars {
+   color: #CD5C5C;
+   text-shadow: 0 0 20px #FF4500, 0 0 40px #DC143C;
+}
+
+.planet-jupiter {
+   color: #DAA520;
+   text-shadow: 0 0 20px #FFD700, 0 0 40px #FFA500;
+}
+
+.planet-saturn {
+   color: #F4A460;
+   text-shadow: 0 0 20px #DEB887, 0 0 40px #D2691E;
+}
+
+.planet-uranus {
+   color: #4FD0E3;
+   text-shadow: 0 0 20px #00CED1, 0 0 40px #48D1CC;
+}
+
+.planet-sun {
+   color: #FFD700;
+   text-shadow: 0 0 30px #FFA500, 0 0 50px #FF8C00, 0 0 70px #FF4500;
+   animation: sunGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes sunGlow {
+   0% { 
+      text-shadow: 0 0 20px #FFA500, 0 0 40px #FF8C00, 0 0 60px #FF4500;
+      transform: scale(1);
+   }
+   100% { 
+      text-shadow: 0 0 40px #FFA500, 0 0 60px #FF8C00, 0 0 80px #FF4500;
+      transform: scale(1.1);
+   }
+}
+
+@keyframes planetGlow {
+   0% { 
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+   }
+   100% { 
+      filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.6));
+   }
+}
+
+/* Galaxies */
+.galaxy {
+   position: absolute;
+   width: 120px;
+   height: 120px;
+   background: 
+      radial-gradient(ellipse at center, 
+         rgba(255, 255, 255, 0.8) 0%, 
+         rgba(173, 216, 230, 0.6) 20%, 
+         rgba(75, 0, 130, 0.4) 40%, 
+         rgba(25, 25, 112, 0.2) 60%, 
+         transparent 80%);
+   border-radius: 50%;
+   opacity: 0.6;
+   animation: galaxyRotate 20s linear infinite, galaxyPulse 5s ease-in-out infinite alternate;
+}
+
+@keyframes galaxyRotate {
+   0% { transform: rotate(0deg); }
+   100% { transform: rotate(360deg); }
+}
+
+@keyframes galaxyPulse {
+   0% { 
+      opacity: 0.4;
+      transform: scale(0.8);
+   }
+   100% { 
+      opacity: 0.8;
+      transform: scale(1.2);
+   }
+}
+
+/* Stardust Trail Effect */
+.stardust {
+   position: absolute;
+   width: 4px;
+   height: 4px;
+   background: radial-gradient(circle, white 0%, transparent 70%);
+   border-radius: 50%;
+   pointer-events: none;
+   animation: stardustExpand 1.5s ease-out forwards;
+}
+
+@keyframes stardustExpand {
+   0% {
+      width: 4px;
+      height: 4px;
+      opacity: 1;
+      background: radial-gradient(circle, white 0%, rgba(173, 216, 230, 0.8) 50%, transparent 100%);
+   }
+   100% {
+      width: 20px;
+      height: 20px;
+      opacity: 0;
+      background: radial-gradient(circle, transparent 0%, white 30%, transparent 100%);
+   }
+}
+
+/* Enhanced Space Background */
+.background::before {
+   content: '';
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background: 
+      radial-gradient(circle at 10% 20%, rgba(138, 43, 226, 0.1) 0%, transparent 30%),
+      radial-gradient(circle at 90% 80%, rgba(72, 61, 139, 0.1) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(25, 25, 112, 0.05) 0%, transparent 60%);
+   animation: cosmicFlow 30s ease-in-out infinite;
+}
+
+@keyframes cosmicFlow {
+   0%, 100% {
+      transform: scale(1) rotate(0deg);
+      opacity: 0.3;
+   }
+   25% {
+      transform: scale(1.1) rotate(90deg);
+      opacity: 0.5;
+   }
+   50% {
+      transform: scale(0.9) rotate(180deg);
+      opacity: 0.4;
+   }
+   75% {
+      transform: scale(1.05) rotate(270deg);
+      opacity: 0.6;
+   }
+}
+
+/* Cosmic Nebula Effect */
+.background::after {
+   content: '';
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background: 
+      radial-gradient(ellipse at 30% 70%, rgba(147, 0, 211, 0.1) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 30%, rgba(75, 0, 130, 0.08) 0%, transparent 60%);
+   animation: nebulaFloat 25s ease-in-out infinite;
+   opacity: 0.7;
+}
+
+@keyframes nebulaFloat {
+   0%, 100% {
+      transform: translate(0, 0) scale(1);
+   }
+   33% {
+      transform: translate(20px, -15px) scale(1.1);
+   }
+   66% {
+      transform: translate(-15px, 20px) scale(0.9);
+   }
+}
+
+/* Legacy fallback */
 .line, .dot {
    position: absolute;
    width: 2px;
    height: 2px;
    background: #a99494;
+   opacity: 0.3;
 }
 
 .container {
