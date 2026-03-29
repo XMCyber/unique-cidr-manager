@@ -5,10 +5,71 @@ const error_message = 'Failed, please try again';
 // Global variable to store the original occupied list data
 let originalOccupiedData = null;
 
+const APP_VIEW_TITLES = {
+    unique: 'Get Unique CIDR',
+    occupied: 'Occupied CIDR List',
+    add: 'Add CIDR to occupied list',
+    delete: 'Delete CIDR from list'
+};
+
+function setAppView(view) {
+    if (!APP_VIEW_TITLES[view]) {
+        return;
+    }
+    document.querySelectorAll('.view-panel').forEach((panel) => {
+        const panelView = panel.id.replace(/^view-/, '');
+        if (panelView === view) {
+            panel.removeAttribute('hidden');
+            panel.classList.add('is-active');
+        } else {
+            panel.setAttribute('hidden', '');
+            panel.classList.remove('is-active');
+        }
+    });
+    document.querySelectorAll('.sidebar-item[data-view]').forEach((btn) => {
+        const isActive = btn.getAttribute('data-view') === view;
+        btn.classList.toggle('is-active', isActive);
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+    const titleEl = document.getElementById('app-page-title');
+    if (titleEl) {
+        titleEl.textContent = APP_VIEW_TITLES[view];
+    }
+    try {
+        history.replaceState(null, '', `#${view}`);
+    } catch (_e) {
+        /* ignore */
+    }
+}
+
+function initAppShell() {
+    const nav = document.querySelector('.sidebar-nav');
+    if (!nav) {
+        return;
+    }
+    nav.querySelectorAll('.sidebar-item[data-view]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            setAppView(btn.getAttribute('data-view'));
+        });
+    });
+    const hash = (location.hash || '').replace(/^#/, '');
+    if (hash && APP_VIEW_TITLES[hash]) {
+        setAppView(hash);
+    } else {
+        setAppView('unique');
+    }
+    window.addEventListener('hashchange', () => {
+        const h = (location.hash || '').replace(/^#/, '');
+        if (h && APP_VIEW_TITLES[h]) {
+            setAppView(h);
+        }
+    });
+}
+
 // Ensure DOM is loaded before running functions
 document.addEventListener('DOMContentLoaded', function() {
     console.log('CIDR Manager frontend loaded successfully');
-    
+    initAppShell();
     // Auto-load the occupied list on page load
     get_occupied_list();
 });

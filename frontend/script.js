@@ -46,13 +46,15 @@ class GalacticBackground {
     }
     
     createPlanets() {
+        // Use Font Awesome glyphs instead of emoji — emoji often break (mojibake / wrong font)
+        // when the page charset or system emoji font mishandles multi-byte sequences.
         const planetTypes = [
-            { class: 'planet-earth', emoji: '🌍' },
-            { class: 'planet-mars', emoji: '🔴' },
-            { class: 'planet-jupiter', emoji: '🪐' },
-            { class: 'planet-saturn', emoji: '🪐' },
-            { class: 'planet-uranus', emoji: '🔵' },
-            { class: 'planet-sun', emoji: '☀️' }
+            { class: 'planet-earth', icon: 'fa-globe-americas' },
+            { class: 'planet-mars', icon: 'fa-circle' },
+            { class: 'planet-jupiter', icon: 'fa-circle' },
+            { class: 'planet-saturn', icon: 'fa-dot-circle' },
+            { class: 'planet-uranus', icon: 'fa-circle' },
+            { class: 'planet-sun', icon: 'fa-sun' }
         ];
         
         const numPlanets = 7;
@@ -61,7 +63,10 @@ class GalacticBackground {
             const planetType = planetTypes[Math.floor(Math.random() * planetTypes.length)];
             
             planet.classList.add('planet', planetType.class);
-            planet.textContent = planetType.emoji;
+            const icon = document.createElement('i');
+            icon.className = `fas ${planetType.icon}`;
+            icon.setAttribute('aria-hidden', 'true');
+            planet.appendChild(icon);
             
             planet.style.left = Math.random() * window.innerWidth + 'px';
             planet.style.top = Math.random() * window.innerHeight + 'px';
